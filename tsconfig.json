@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "declaration": true, 
+    "declarationMap": true,
+    "composite": true,   
+    "rootDir": "./src",   
+    "outDir": "./dist",
+    "jsx": "preserve",
+    "lib": ["dom", "dom.iterable", "esnext"],
+  },
+  "include": ["./src"],
+  "exclude": ["node_modules"]
+}
