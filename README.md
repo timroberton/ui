@@ -1,6 +1,6 @@
 # Tim's UI component library
 
-### Tailwind settings
+## Tailwind settings
 
 Need to define the following properties in `./tailwind.config.js`
 
