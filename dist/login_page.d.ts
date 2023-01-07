@@ -5,5 +5,5 @@ export declare type LoginPageProps = {
     logoLinkElement?: React.ReactElement;
     resetPasswordRedirectUrl: string;
 };
-export declare function LoginPage(p: any): JSX.Element;
+export declare function LoginPage(p: LoginPageProps): JSX.Element;
 //# sourceMappingURL=login_page.d.ts.map

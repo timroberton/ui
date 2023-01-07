@@ -13,7 +13,7 @@ export type LoginPageProps = {
   resetPasswordRedirectUrl: string;
 };
 
-export function LoginPage(p) {
+export function LoginPage(p: LoginPageProps) {
   const [loginViewState, setLoginViewState] =
     useState<LoginViewState>("signin");
 
