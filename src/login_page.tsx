@@ -10,6 +10,7 @@ type LoginViewState = "signin" | "register" | "resetpassword";
 export type LoginPageProps = {
   supabase: SupabaseClient;
   logoLinkElement?: React.ReactElement;
+  resetPasswordRedirectUrl: string;
 };
 
 export function LoginPage(p) {
@@ -38,6 +39,7 @@ export function LoginPage(p) {
           <ResetPasswordForm
             changeLoginViewState={(v) => setLoginViewState(v)}
             supabase={p.supabase}
+            resetPasswordRedirectUrl={p.resetPasswordRedirectUrl}
           />
         )}
       </div>
@@ -52,6 +54,7 @@ export function LoginPage(p) {
 type LoginPageFormProps = {
   changeLoginViewState: (v: LoginViewState) => void;
   supabase: SupabaseClient;
+  resetPasswordRedirectUrl?: string;
 };
 
 function SignInForm(p: LoginPageFormProps) {
@@ -200,7 +203,10 @@ function ResetPasswordForm(p: LoginPageFormProps) {
     setLoading(true);
     setErrorMsg("");
     const { data, error } = await p.supabase.auth.resetPasswordForEmail(
-      email || "timroberton@gmail.com"
+      email || "timroberton@gmail.com",
+      {
+        redirectTo: p.resetPasswordRedirectUrl,
+      }
     );
     if (error) {
       setLoading(false);

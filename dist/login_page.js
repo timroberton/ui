@@ -6,7 +6,7 @@ import { Button } from "./button";
 import { Input } from "./input";
 export function LoginPage(p) {
     var _a = useState("signin"), loginViewState = _a[0], setLoginViewState = _a[1];
-    return (_jsx("main", __assign({ className: "grid h-screen w-screen place-items-center" }, { children: _jsxs("div", __assign({ className: "" }, { children: [p.logoLinkElement && (_jsx("div", __assign({ className: "w-full text-center" }, { children: p.logoLinkElement }), void 0)), loginViewState === "signin" && (_jsx(SignInForm, { changeLoginViewState: function (v) { return setLoginViewState(v); }, supabase: p.supabase }, void 0)), loginViewState === "register" && (_jsx(RegisterForm, { changeLoginViewState: function (v) { return setLoginViewState(v); }, supabase: p.supabase }, void 0)), loginViewState === "resetpassword" && (_jsx(ResetPasswordForm, { changeLoginViewState: function (v) { return setLoginViewState(v); }, supabase: p.supabase }, void 0))] }), void 0) }), void 0));
+    return (_jsx("main", __assign({ className: "grid h-screen w-screen place-items-center" }, { children: _jsxs("div", __assign({ className: "" }, { children: [p.logoLinkElement && (_jsx("div", __assign({ className: "w-full text-center" }, { children: p.logoLinkElement }), void 0)), loginViewState === "signin" && (_jsx(SignInForm, { changeLoginViewState: function (v) { return setLoginViewState(v); }, supabase: p.supabase }, void 0)), loginViewState === "register" && (_jsx(RegisterForm, { changeLoginViewState: function (v) { return setLoginViewState(v); }, supabase: p.supabase }, void 0)), loginViewState === "resetpassword" && (_jsx(ResetPasswordForm, { changeLoginViewState: function (v) { return setLoginViewState(v); }, supabase: p.supabase, resetPasswordRedirectUrl: p.resetPasswordRedirectUrl }, void 0))] }), void 0) }), void 0));
 }
 function SignInForm(p) {
     var _a = useState(false), loading = _a[0], setLoading = _a[1];
@@ -90,7 +90,9 @@ function ResetPasswordForm(p) {
                         evt.preventDefault();
                         setLoading(true);
                         setErrorMsg("");
-                        return [4 /*yield*/, p.supabase.auth.resetPasswordForEmail(email || "timroberton@gmail.com")];
+                        return [4 /*yield*/, p.supabase.auth.resetPasswordForEmail(email || "timroberton@gmail.com", {
+                                redirectTo: p.resetPasswordRedirectUrl,
+                            })];
                     case 1:
                         _b = _c.sent(), data = _b.data, error = _b.error;
                         if (error) {
