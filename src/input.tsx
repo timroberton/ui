@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { cva, VariantProps } from "class-variance-authority";
 
 export const getClassesForInput = cva("block w-full rounded border-base-300", {
