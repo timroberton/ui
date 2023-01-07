@@ -77,7 +77,7 @@ function SignInForm(p: LoginPageFormProps) {
   return (
     <form id="signInForm" className="w-96 pb-32">
       <div className="mt-4 text-center text-lg font-700 text-primary">
-        Sign in to use the Evaluation Planning Tool
+        Sign in to use the app
       </div>
       <div className="mt-4 mb-1 text-sm">Email</div>
       <Input
@@ -143,7 +143,7 @@ function RegisterForm(p: LoginPageFormProps) {
   return (
     <form id="registerForm" className="w-96 pb-32">
       <div className="mt-4 text-center text-lg font-700 text-primary">
-        Create an account for the Evaluation Planning Tool
+        Create an account for the app
       </div>
       <div className="mt-4 mb-1 text-sm">Email</div>
       <Input
@@ -212,7 +212,7 @@ function ResetPasswordForm(p: LoginPageFormProps) {
   return (
     <form id="resetPasswordForm" className="w-96 pb-32">
       <div className="mt-4 text-center text-lg font-700 text-primary">
-        Sign in to use the Evaluation Planning Tool
+        Reset your password
       </div>
       <div className="mt-4 mb-1 text-sm">Email</div>
       <Input
