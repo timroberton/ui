@@ -5,7 +5,7 @@ export declare type MeasureContext = {
         h: number;
     }>;
 };
-export default function MeasureProvider({ children, }: {
+export declare function MeasureProvider({ children }: {
     children: React.ReactNode;
 }): JSX.Element;
 export declare const useMeasure: () => MeasureContext;

@@ -21,11 +21,7 @@ export type MeasureContext = {
 
 const Context = createContext<MeasureContext | null>(null);
 
-export default function MeasureProvider({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export function MeasureProvider({ children }: { children: React.ReactNode }) {
   const outerRef = useRef<HTMLElement | null>(null);
   const innerRef = useRef<HTMLElement | null>(null);
 
