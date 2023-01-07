@@ -1,6 +1,6 @@
 "use client";
 import { __assign, __rest } from "tslib";
-import React from "react";
+import { jsx as _jsx } from "react/jsx-runtime";
 import { cva } from "class-variance-authority";
 export var getClassesForButton = cva("inline-flex items-center justify-center rounded border border-transparent font-400 focus:outline-none", {
     variants: {
@@ -32,12 +32,12 @@ export var getClassesForButton = cva("inline-flex items-center justify-center ro
 });
 export function Button(_a) {
     var className = _a.className, intent = _a.intent, size = _a.size, margin = _a.margin, showFocusedState = _a.showFocusedState, props = __rest(_a, ["className", "intent", "size", "margin", "showFocusedState"]);
-    return (React.createElement("button", __assign({ className: getClassesForButton({
+    return (_jsx("button", __assign({ className: getClassesForButton({
             intent: intent,
             size: size,
             margin: margin,
             showFocusedState: showFocusedState,
             className: className,
-        }) }, props), props.children));
+        }) }, props, { children: props.children }), void 0));
 }
 //# sourceMappingURL=button.js.map

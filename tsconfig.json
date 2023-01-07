@@ -8,7 +8,7 @@
     "declarationMap": true,
     "rootDir": "./src",   
     "outDir": "./dist",
-    "jsx": "react",
+    "jsx": "react-jsx",
     "lib": ["dom", "dom.iterable", "esnext"],
     "esModuleInterop": true,
     "module": "ESNext",

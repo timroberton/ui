@@ -1,6 +1,6 @@
 "use client";
 import { __assign, __rest } from "tslib";
-import React from "react";
+import { jsx as _jsx } from "react/jsx-runtime";
 import { cva } from "class-variance-authority";
 export var getClassesForInput = cva("block w-full rounded border-base-300", {
     variants: {
@@ -22,10 +22,10 @@ export var getClassesForInput = cva("block w-full rounded border-base-300", {
 });
 export function Input(_a) {
     var className = _a.className, intent = _a.intent, margin = _a.margin, props = __rest(_a, ["className", "intent", "margin"]);
-    return (React.createElement("input", __assign({ className: getClassesForInput({
+    return (_jsx("input", __assign({ className: getClassesForInput({
             intent: intent,
             margin: margin,
             className: className,
-        }) }, props)));
+        }) }, props), void 0));
 }
 //# sourceMappingURL=input.js.map
