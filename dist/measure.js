@@ -3,7 +3,7 @@ import { __assign } from "tslib";
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { createContext, useContext, useEffect, useRef } from "react";
 var Context = createContext(null);
-export function MeasureProvider(_a) {
+export default function MeasureProvider(_a) {
     var children = _a.children;
     var outerRef = useRef(null);
     var innerRef = useRef(null);
