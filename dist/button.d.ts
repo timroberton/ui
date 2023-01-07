@@ -2,7 +2,7 @@
 import { VariantProps } from "class-variance-authority";
 export declare const getClassesForButton: (props?: {
     intent?: "primary" | "secondary";
-    size?: "small" | "medium";
+    size?: "medium" | "small";
     margin?: "left" | "right";
     showFocusedState?: boolean;
 } & import("class-variance-authority/dist/types").ClassProp) => string;
