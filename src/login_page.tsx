@@ -1,16 +1,18 @@
 "use client";
 
 import { SupabaseClient } from "@supabase/auth-helpers-nextjs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "./button";
 import { Input } from "./input";
 
-type LoginViewState = "signin" | "register" | "resetpassword";
+type LoginViewState = "signin" | "register" | "resetpasswordrequest";
 
 export type LoginPageProps = {
   supabase: SupabaseClient;
   logoLinkElement?: React.ReactElement;
   resetPasswordRedirectUrl: string;
+  showResetPasswordForm: boolean;
+  cancelResetPasswordForm: () => void;
 };
 
 export function LoginPage(p: LoginPageProps) {
@@ -18,29 +20,40 @@ export function LoginPage(p: LoginPageProps) {
     useState<LoginViewState>("signin");
 
   return (
-    <main className="grid h-screen w-screen place-items-center">
-      <div className="">
+    <main className="flex h-screen w-screen items-start justify-center">
+      <div className="bg-base-200 mt-24 rounded py-10 px-12">
         {p.logoLinkElement && (
           <div className="w-full text-center">{p.logoLinkElement}</div>
         )}
-        {loginViewState === "signin" && (
-          <SignInForm
-            changeLoginViewState={(v) => setLoginViewState(v)}
-            supabase={p.supabase}
-          />
-        )}
-        {loginViewState === "register" && (
-          <RegisterForm
-            changeLoginViewState={(v) => setLoginViewState(v)}
-            supabase={p.supabase}
-          />
-        )}
-        {loginViewState === "resetpassword" && (
+        {p.showResetPasswordForm ? (
           <ResetPasswordForm
             changeLoginViewState={(v) => setLoginViewState(v)}
             supabase={p.supabase}
             resetPasswordRedirectUrl={p.resetPasswordRedirectUrl}
+            cancelResetPasswordForm={p.cancelResetPasswordForm}
           />
+        ) : (
+          <>
+            {loginViewState === "signin" && (
+              <SignInForm
+                changeLoginViewState={(v) => setLoginViewState(v)}
+                supabase={p.supabase}
+              />
+            )}
+            {loginViewState === "register" && (
+              <RegisterForm
+                changeLoginViewState={(v) => setLoginViewState(v)}
+                supabase={p.supabase}
+              />
+            )}
+            {loginViewState === "resetpasswordrequest" && (
+              <ResetPasswordRequest
+                changeLoginViewState={(v) => setLoginViewState(v)}
+                supabase={p.supabase}
+                resetPasswordRedirectUrl={p.resetPasswordRedirectUrl}
+              />
+            )}
+          </>
         )}
       </div>
     </main>
@@ -55,6 +68,7 @@ type LoginPageFormProps = {
   changeLoginViewState: (v: LoginViewState) => void;
   supabase: SupabaseClient;
   resetPasswordRedirectUrl?: string;
+  cancelResetPasswordForm?: () => void;
 };
 
 function SignInForm(p: LoginPageFormProps) {
@@ -78,8 +92,8 @@ function SignInForm(p: LoginPageFormProps) {
   }
 
   return (
-    <form id="signInForm" className="w-96 pb-32">
-      <div className="mt-4 text-center text-lg font-700 text-primary">
+    <form id="signInForm" className="w-96">
+      <div className="font-700 text-primary mt-4 text-center text-lg">
         Sign in to use the app
       </div>
       <div className="mt-4 mb-1 text-sm">Email</div>
@@ -106,17 +120,25 @@ function SignInForm(p: LoginPageFormProps) {
         </Button>
       </div>
       <div className="mt-4 text-center">
-        <span onClick={() => p.changeLoginViewState("register")}>
+        <span
+          className="cursor-pointer hover:underline"
+          onClick={() => p.changeLoginViewState("register")}
+        >
           Don't have an account?
         </span>
       </div>
       <div className="mt-4 text-center">
-        <span onClick={() => p.changeLoginViewState("resetpassword")}>
+        <span
+          className="cursor-pointer hover:underline"
+          onClick={() => p.changeLoginViewState("resetpasswordrequest")}
+        >
           Forgot password?
         </span>
       </div>
-      {loading && <div className="">Signing in...</div>}
-      {errorMsg && <div className="text-error">{errorMsg}</div>}
+      {loading && <div className="mt-4 text-center">Signing in...</div>}
+      {errorMsg && (
+        <div className="text-error mt-4 text-center">{errorMsg}</div>
+      )}
     </form>
   );
 }
@@ -144,8 +166,8 @@ function RegisterForm(p: LoginPageFormProps) {
   }
 
   return (
-    <form id="registerForm" className="w-96 pb-32">
-      <div className="mt-4 text-center text-lg font-700 text-primary">
+    <form id="registerForm" className="w-96">
+      <div className="font-700 text-primary mt-4 text-center text-lg">
         Create an account for the app
       </div>
       <div className="mt-4 mb-1 text-sm">Email</div>
@@ -184,23 +206,34 @@ function RegisterForm(p: LoginPageFormProps) {
         </Button>
       </div>
       <div className="mt-4 text-center">
-        <span onClick={() => p.changeLoginViewState("signin")}>
+        <span
+          className="cursor-pointer hover:underline"
+          onClick={() => p.changeLoginViewState("signin")}
+        >
           Already have an account?
         </span>
       </div>
-      {loading && <div className="">Signing in...</div>}
-      {errorMsg && <div className="text-error">{errorMsg}</div>}
+      {loading && <div className="mt-4 text-center">Signing in...</div>}
+      {errorMsg && (
+        <div className="text-error mt-4 text-center">{errorMsg}</div>
+      )}
     </form>
   );
 }
 
-function ResetPasswordForm(p: LoginPageFormProps) {
-  const [loading, setLoading] = useState<boolean>(false);
+type ResetPasswordRequestViewState =
+  | "userentry"
+  | "sending"
+  | "finishedsending";
+
+function ResetPasswordRequest(p: LoginPageFormProps) {
+  const [loading, setLoading] =
+    useState<ResetPasswordRequestViewState>("userentry");
   const [email, setEmail] = useState<string>("");
   const [errorMsg, setErrorMsg] = useState<string>("");
   async function submit(evt: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     evt.preventDefault();
-    setLoading(true);
+    setLoading("sending");
     setErrorMsg("");
     const { data, error } = await p.supabase.auth.resetPasswordForEmail(
       email || "timroberton@gmail.com",
@@ -209,34 +242,109 @@ function ResetPasswordForm(p: LoginPageFormProps) {
       }
     );
     if (error) {
-      setLoading(false);
-      setErrorMsg(error?.message ?? "Problem with password reset");
+      setLoading("userentry");
+      setErrorMsg(
+        error?.message ?? "Problem with sending reset password email"
+      );
+      return;
     }
-    console.log(data, error);
+    setLoading("finishedsending");
   }
 
   return (
-    <form id="resetPasswordForm" className="w-96 pb-32">
-      <div className="mt-4 text-center text-lg font-700 text-primary">
-        Reset your password
+    <form id="resetPasswordRequestForm" className="w-96">
+      {(loading === "userentry" || loading === "sending") && (
+        <>
+          <div className="font-700 text-primary mt-4 text-center text-lg">
+            Reset your password
+          </div>
+          <div className="mt-4 mb-1 text-sm">Email</div>
+          <Input
+            type="email"
+            value={email}
+            onChange={(v) => setEmail(v.target.value)}
+            autoFocus
+          />
+          <div className="mt-4">
+            <Button
+              className="w-full"
+              onClick={submit}
+              type="submit"
+              form="resetPasswordRequestForm"
+            >
+              Send email with link
+            </Button>
+          </div>
+          <div className="mt-4 text-center">
+            <span
+              className="cursor-pointer hover:underline"
+              onClick={() => p.changeLoginViewState("signin")}
+            >
+              Remember your password?
+            </span>
+          </div>
+          {loading === "sending" && (
+            <div className="mt-4 text-center">Sending email...</div>
+          )}
+          {errorMsg && (
+            <div className="text-error mt-4 text-center">{errorMsg}</div>
+          )}
+        </>
+      )}
+      {loading === "finishedsending" && (
+        <div className="mt-4 text-center">
+          Email sent! Check your email for a link to reset your password.
+        </div>
+      )}
+    </form>
+  );
+}
+
+function ResetPasswordForm(p: LoginPageFormProps) {
+  const [loading, setLoading] = useState<boolean>(false);
+  const [password, setPassword] = useState<string>("");
+  const [errorMsg, setErrorMsg] = useState<string>("");
+  async function submit(evt: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+    evt.preventDefault();
+    setLoading(true);
+    setErrorMsg("");
+    const { data, error } = await p.supabase.auth.updateUser({
+      password: password || "eptept",
+    });
+    if (error) {
+      setLoading(false);
+      setErrorMsg(error?.message ?? "Problem with updating password");
+      return;
+    }
+    p.cancelResetPasswordForm();
+  }
+
+  return (
+    <form id="resetPasswordForm" className="w-96">
+      <div className="font-700 text-primary mt-4 text-center text-lg">
+        Enter a new password here
       </div>
-      <div className="mt-4 mb-1 text-sm">Email</div>
+      <div className="mt-4 mb-1 text-sm">New password</div>
       <Input
-        type="email"
-        value={email}
-        onChange={(v) => setEmail(v.target.value)}
+        type={"password"}
+        value={password}
+        onChange={(v) => setPassword(v.target.value)}
         autoFocus
       />
       <div className="mt-4">
-        <Button onClick={submit} type="submit" form="resetPasswordForm">
-          Send email with link
-        </Button>
-        <Button onClick={() => p.changeLoginViewState("signin")}>
-          Sign in
+        <Button
+          className="w-full"
+          onClick={submit}
+          type="submit"
+          form="resetPasswordForm"
+        >
+          Save
         </Button>
       </div>
-      {loading && <div className="">Signing in...</div>}
-      {errorMsg && <div className="text-error">{errorMsg}</div>}
+      {loading && <div className="mt-4 text-center">Resetting password...</div>}
+      {errorMsg && (
+        <div className="text-error mt-4 text-center">{errorMsg}</div>
+      )}
     </form>
   );
 }
