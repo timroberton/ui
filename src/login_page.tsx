@@ -312,18 +312,8 @@ function ResetPasswordForm(p: LoginPageFormProps) {
       password: password || "eptept",
     });
     if (error) {
+      const hashParams = getHashParams(); // Try to get error message from url (i.e. from supabase)
       setLoading(false);
-      // Try to get error message from url (i.e. from supabase)
-      const hashParams = window.location.hash
-        .substring(1)
-        .split("&")
-        .map((a) => a.split("="))
-        .reduce((params, val) => {
-          if (val[0] && val[1]) {
-            params[val[0]] = val[1].replaceAll("+", " ");
-          }
-          return params;
-        }, {});
       setErrorMsg(
         hashParams["error_description"] ??
           error?.message ??
@@ -362,4 +352,21 @@ function ResetPasswordForm(p: LoginPageFormProps) {
       )}
     </form>
   );
+}
+
+///////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////
+
+function getHashParams(): Record<string, string> {
+  return window.location.hash
+    .substring(1)
+    .split("&")
+    .map((a) => a.split("="))
+    .reduce<Record<string, string>>((params, val) => {
+      if (val[0] && val[1]) {
+        params[val[0]] = val[1].replaceAll("+", " ");
+      }
+      return params;
+    }, {});
 }

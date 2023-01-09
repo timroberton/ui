@@ -128,17 +128,8 @@ function ResetPasswordForm(p) {
                     case 1:
                         _c = _d.sent(), data = _c.data, error = _c.error;
                         if (error) {
+                            hashParams = getHashParams();
                             setLoading(false);
-                            hashParams = window.location.hash
-                                .substring(1)
-                                .split("&")
-                                .map(function (a) { return a.split("="); })
-                                .reduce(function (params, val) {
-                                if (val[0] && val[1]) {
-                                    params[val[0]] = val[1].replaceAll("+", " ");
-                                }
-                                return params;
-                            }, {});
                             setErrorMsg((_b = (_a = hashParams["error_description"]) !== null && _a !== void 0 ? _a : error === null || error === void 0 ? void 0 : error.message) !== null && _b !== void 0 ? _b : "Problem with updating password");
                             return [2 /*return*/];
                         }
@@ -149,5 +140,20 @@ function ResetPasswordForm(p) {
         });
     }
     return (_jsxs("form", __assign({ id: "resetPasswordForm", className: "w-96" }, { children: [_jsx("div", __assign({ className: "font-700 text-primary mt-4 text-center text-lg" }, { children: "Enter a new password here" }), void 0), _jsx("div", __assign({ className: "mt-4 mb-1 text-sm" }, { children: "New password" }), void 0), _jsx(Input, { type: "password", value: password, onChange: function (v) { return setPassword(v.target.value); }, autoFocus: true }, void 0), _jsx("div", __assign({ className: "mt-4" }, { children: _jsx(Button, __assign({ className: "w-full", onClick: submit, type: "submit", form: "resetPasswordForm" }, { children: "Save" }), void 0) }), void 0), loading && _jsx("div", __assign({ className: "mt-4 text-center" }, { children: "Resetting password..." }), void 0), errorMsg && (_jsx("div", __assign({ className: "text-error mt-4 text-center" }, { children: errorMsg }), void 0))] }), void 0));
+}
+///////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////
+function getHashParams() {
+    return window.location.hash
+        .substring(1)
+        .split("&")
+        .map(function (a) { return a.split("="); })
+        .reduce(function (params, val) {
+        if (val[0] && val[1]) {
+            params[val[0]] = val[1].replaceAll("+", " ");
+        }
+        return params;
+    }, {});
 }
 //# sourceMappingURL=login_page.js.map
