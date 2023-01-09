@@ -10,9 +10,9 @@ type LoginViewState = "signin" | "register" | "resetpasswordrequest";
 export type LoginPageProps = {
   supabase: SupabaseClient;
   logoLinkElement?: React.ReactElement;
-  resetPasswordRedirectUrl: string;
-  showResetPasswordForm: boolean;
-  afterResetPassword: () => void;
+  resetPasswordRedirectUrl?: string;
+  showResetPasswordForm?: boolean;
+  afterResetPassword?: () => void;
 };
 
 export function LoginPage(p: LoginPageProps) {
