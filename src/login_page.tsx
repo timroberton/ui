@@ -13,14 +13,14 @@ export type LoginPageProps =
 
 type LoginPagePropsSignInRegisterResetPasswordRequest = {
   type: "login";
-  supabase: SupabaseClient;
+  supabaseBrowserClient: SupabaseClient;
   logoLinkElement?: React.ReactElement;
   resetPasswordRedirectUrl: string;
 };
 
 type LoginPagePropsResetPasswordForm = {
   type: "resetpasswordform";
-  supabase: SupabaseClient;
+  supabaseBrowserClient: SupabaseClient;
   logoLinkElement?: React.ReactElement;
   afterResetPassword: () => void;
 };
@@ -38,7 +38,7 @@ export function LoginPage(p: LoginPageProps) {
         {p.type === "resetpasswordform" ? (
           <ResetPasswordForm
             changeLoginViewState={(v) => setLoginViewState(v)}
-            supabase={p.supabase}
+            supabase={p.supabaseBrowserClient}
             afterResetPassword={p.afterResetPassword}
           />
         ) : (
@@ -46,19 +46,19 @@ export function LoginPage(p: LoginPageProps) {
             {loginViewState === "signin" && (
               <SignInForm
                 changeLoginViewState={(v) => setLoginViewState(v)}
-                supabase={p.supabase}
+                supabase={p.supabaseBrowserClient}
               />
             )}
             {loginViewState === "register" && (
               <RegisterForm
                 changeLoginViewState={(v) => setLoginViewState(v)}
-                supabase={p.supabase}
+                supabase={p.supabaseBrowserClient}
               />
             )}
             {loginViewState === "resetpasswordrequest" && (
               <ResetPasswordRequest
                 changeLoginViewState={(v) => setLoginViewState(v)}
-                supabase={p.supabase}
+                supabase={p.supabaseBrowserClient}
                 resetPasswordRedirectUrl={p.resetPasswordRedirectUrl}
               />
             )}

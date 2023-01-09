@@ -3,13 +3,13 @@ import { SupabaseClient } from "@supabase/auth-helpers-nextjs";
 export declare type LoginPageProps = LoginPagePropsSignInRegisterResetPasswordRequest | LoginPagePropsResetPasswordForm;
 declare type LoginPagePropsSignInRegisterResetPasswordRequest = {
     type: "login";
-    supabase: SupabaseClient;
+    supabaseBrowserClient: SupabaseClient;
     logoLinkElement?: React.ReactElement;
     resetPasswordRedirectUrl: string;
 };
 declare type LoginPagePropsResetPasswordForm = {
     type: "resetpasswordform";
-    supabase: SupabaseClient;
+    supabaseBrowserClient: SupabaseClient;
     logoLinkElement?: React.ReactElement;
     afterResetPassword: () => void;
 };
