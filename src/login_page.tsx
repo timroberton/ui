@@ -319,7 +319,7 @@ function ResetPasswordForm(p: LoginPageFormProps) {
         .split("&")
         .map((a) => a.split("="))
         .reduce((params, val) => {
-          params[val[0]] = val[1];
+          params[val[0]] = val[1]?.replaceAll("+", " ");
           return params;
         }, {});
       setErrorMsg(
