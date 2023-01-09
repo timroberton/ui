@@ -340,7 +340,6 @@ function ResetPasswordForm(p: LoginPageFormPropsRequestPasswordForm) {
     });
     if (error) {
       const hashParams = getHashParams(); // Try to get error message from url (i.e. from supabase)
-      setLoading(false);
       setErrorMsg(
         hashParams["error_description"] ??
           error?.message ??

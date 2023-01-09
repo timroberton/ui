@@ -135,7 +135,6 @@ function ResetPasswordForm(p) {
                         _c = _d.sent(), data = _c.data, error = _c.error;
                         if (error) {
                             hashParams = getHashParams();
-                            setLoading(false);
                             setErrorMsg((_b = (_a = hashParams["error_description"]) !== null && _a !== void 0 ? _a : error === null || error === void 0 ? void 0 : error.message) !== null && _b !== void 0 ? _b : "Problem with updating password");
                             return [2 /*return*/];
                         }
