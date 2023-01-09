@@ -113,11 +113,11 @@ function ResetPasswordForm(p) {
     var _b = useState(""), password = _b[0], setPassword = _b[1];
     var _c = useState(""), errorMsg = _c[0], setErrorMsg = _c[1];
     function submit(evt) {
-        var _a;
+        var _a, _b;
         return __awaiter(this, void 0, void 0, function () {
-            var _b, data, error;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
+            var _c, data, error, hashParams;
+            return __generator(this, function (_d) {
+                switch (_d.label) {
                     case 0:
                         evt.preventDefault();
                         setLoading(true);
@@ -126,10 +126,18 @@ function ResetPasswordForm(p) {
                                 password: password || "eptept",
                             })];
                     case 1:
-                        _b = _c.sent(), data = _b.data, error = _b.error;
+                        _c = _d.sent(), data = _c.data, error = _c.error;
                         if (error) {
                             setLoading(false);
-                            setErrorMsg((_a = error === null || error === void 0 ? void 0 : error.message) !== null && _a !== void 0 ? _a : "Problem with updating password");
+                            hashParams = window.location.hash
+                                .substring(1)
+                                .split("&")
+                                .map(function (a) { return a.split("="); })
+                                .reduce(function (params, val) {
+                                params[val[0]] = val[1];
+                                return params;
+                            }, {});
+                            setErrorMsg((_b = (_a = hashParams["error_description"]) !== null && _a !== void 0 ? _a : error === null || error === void 0 ? void 0 : error.message) !== null && _b !== void 0 ? _b : "Problem with updating password");
                             return [2 /*return*/];
                         }
                         p.afterResetPassword();

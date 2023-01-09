@@ -313,7 +313,20 @@ function ResetPasswordForm(p: LoginPageFormProps) {
     });
     if (error) {
       setLoading(false);
-      setErrorMsg(error?.message ?? "Problem with updating password");
+      // Try to get error message from url (i.e. from supabase)
+      const hashParams = window.location.hash
+        .substring(1)
+        .split("&")
+        .map((a) => a.split("="))
+        .reduce((params, val) => {
+          params[val[0]] = val[1];
+          return params;
+        }, {});
+      setErrorMsg(
+        hashParams["error_description"] ??
+          error?.message ??
+          "Problem with updating password"
+      );
       return;
     }
     p.afterResetPassword();
