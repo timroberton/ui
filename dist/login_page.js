@@ -134,8 +134,9 @@ function ResetPasswordForm(p) {
                                 .split("&")
                                 .map(function (a) { return a.split("="); })
                                 .reduce(function (params, val) {
-                                var _a;
-                                params[val[0]] = (_a = val[1]) === null || _a === void 0 ? void 0 : _a.replaceAll("+", " ");
+                                if (val[0] && val[1]) {
+                                    params[val[0]] = val[1].replaceAll("+", " ");
+                                }
                                 return params;
                             }, {});
                             setErrorMsg((_b = (_a = hashParams["error_description"]) !== null && _a !== void 0 ? _a : error === null || error === void 0 ? void 0 : error.message) !== null && _b !== void 0 ? _b : "Problem with updating password");
