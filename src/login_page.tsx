@@ -1,7 +1,7 @@
 "use client";
 
 import { SupabaseClient } from "@supabase/auth-helpers-nextjs";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "./button";
 import { Input } from "./input";
 
@@ -12,7 +12,7 @@ export type LoginPageProps = {
   logoLinkElement?: React.ReactElement;
   resetPasswordRedirectUrl: string;
   showResetPasswordForm: boolean;
-  cancelResetPasswordForm: () => void;
+  afterResetPassword: () => void;
 };
 
 export function LoginPage(p: LoginPageProps) {
@@ -30,7 +30,7 @@ export function LoginPage(p: LoginPageProps) {
             changeLoginViewState={(v) => setLoginViewState(v)}
             supabase={p.supabase}
             resetPasswordRedirectUrl={p.resetPasswordRedirectUrl}
-            cancelResetPasswordForm={p.cancelResetPasswordForm}
+            afterResetPassword={p.afterResetPassword}
           />
         ) : (
           <>
@@ -68,7 +68,7 @@ type LoginPageFormProps = {
   changeLoginViewState: (v: LoginViewState) => void;
   supabase: SupabaseClient;
   resetPasswordRedirectUrl?: string;
-  cancelResetPasswordForm?: () => void;
+  afterResetPassword?: () => void;
 };
 
 function SignInForm(p: LoginPageFormProps) {
@@ -316,7 +316,7 @@ function ResetPasswordForm(p: LoginPageFormProps) {
       setErrorMsg(error?.message ?? "Problem with updating password");
       return;
     }
-    p.cancelResetPasswordForm();
+    p.afterResetPassword();
   }
 
   return (
