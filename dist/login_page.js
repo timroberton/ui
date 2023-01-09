@@ -113,6 +113,7 @@ function ResetPasswordForm(p) {
     var _b = useState(""), password = _b[0], setPassword = _b[1];
     var _c = useState(""), errorMsg = _c[0], setErrorMsg = _c[1];
     useEffect(function () {
+        // Try to get error message from url (i.e. from supabase)
         var hashParams = getHashParams();
         if (hashParams["error_description"]) {
             setErrorMsg(hashParams["error_description"]);

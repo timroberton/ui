@@ -325,6 +325,7 @@ function ResetPasswordForm(p: LoginPageFormPropsRequestPasswordForm) {
   const [errorMsg, setErrorMsg] = useState<string>("");
 
   useEffect(() => {
+    // Try to get error message from url (i.e. from supabase)
     const hashParams = getHashParams();
     if (hashParams["error_description"]) {
       setErrorMsg(hashParams["error_description"]);
@@ -339,7 +340,8 @@ function ResetPasswordForm(p: LoginPageFormPropsRequestPasswordForm) {
       password: password || "eptept",
     });
     if (error) {
-      const hashParams = getHashParams(); // Try to get error message from url (i.e. from supabase)
+      // Try to get error message from url (i.e. from supabase)
+      const hashParams = getHashParams();
       setErrorMsg(
         hashParams["error_description"] ??
           error?.message ??
