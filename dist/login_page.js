@@ -1,7 +1,7 @@
 "use client";
 import { __assign, __awaiter, __generator } from "tslib";
 import { jsx as _jsx, Fragment as _Fragment, jsxs as _jsxs } from "react/jsx-runtime";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "./button";
 import { Input } from "./input";
 export function LoginPage(p) {
@@ -112,6 +112,12 @@ function ResetPasswordForm(p) {
     var _a = useState(false), loading = _a[0], setLoading = _a[1];
     var _b = useState(""), password = _b[0], setPassword = _b[1];
     var _c = useState(""), errorMsg = _c[0], setErrorMsg = _c[1];
+    useEffect(function () {
+        var hashParams = getHashParams();
+        if (hashParams["error_description"]) {
+            setErrorMsg(hashParams["error_description"]);
+        }
+    }, []);
     function submit(evt) {
         var _a, _b;
         return __awaiter(this, void 0, void 0, function () {
@@ -139,12 +145,15 @@ function ResetPasswordForm(p) {
             });
         });
     }
-    return (_jsxs("form", __assign({ id: "resetPasswordForm", className: "w-96" }, { children: [_jsx("div", __assign({ className: "font-700 text-primary mt-4 text-center text-lg" }, { children: "Enter a new password here" }), void 0), _jsx("div", __assign({ className: "mt-4 mb-1 text-sm" }, { children: "New password" }), void 0), _jsx(Input, { type: "password", value: password, onChange: function (v) { return setPassword(v.target.value); }, autoFocus: true }, void 0), _jsx("div", __assign({ className: "mt-4" }, { children: _jsx(Button, __assign({ className: "w-full", onClick: submit, type: "submit", form: "resetPasswordForm" }, { children: "Save" }), void 0) }), void 0), loading && _jsx("div", __assign({ className: "mt-4 text-center" }, { children: "Resetting password..." }), void 0), errorMsg && (_jsx("div", __assign({ className: "text-error mt-4 text-center" }, { children: errorMsg }), void 0))] }), void 0));
+    return (_jsx("form", __assign({ id: "resetPasswordForm", className: "w-96" }, { children: errorMsg ? (_jsx("div", __assign({ className: "text-error mt-4 text-center" }, { children: errorMsg }), void 0)) : (_jsxs(_Fragment, { children: [_jsx("div", __assign({ className: "font-700 text-primary mt-4 text-center text-lg" }, { children: "Enter a new password here" }), void 0), _jsx("div", __assign({ className: "mt-4 mb-1 text-sm" }, { children: "New password" }), void 0), _jsx(Input, { type: "password", value: password, onChange: function (v) { return setPassword(v.target.value); }, autoFocus: true }, void 0), _jsx("div", __assign({ className: "mt-4" }, { children: _jsx(Button, __assign({ className: "w-full", onClick: submit, type: "submit", form: "resetPasswordForm" }, { children: "Save" }), void 0) }), void 0), loading && (_jsx("div", __assign({ className: "mt-4 text-center" }, { children: "Resetting password..." }), void 0))] }, void 0)) }), void 0));
 }
 ///////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////
 function getHashParams() {
+    if (typeof window === "undefined") {
+        return {};
+    }
     return window.location.hash
         .substring(1)
         .split("&")

@@ -1,7 +1,7 @@
 "use client";
 
 import { SupabaseClient } from "@supabase/auth-helpers-nextjs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "./button";
 import { Input } from "./input";
 
@@ -323,6 +323,14 @@ function ResetPasswordForm(p: LoginPageFormPropsRequestPasswordForm) {
   const [loading, setLoading] = useState<boolean>(false);
   const [password, setPassword] = useState<string>("");
   const [errorMsg, setErrorMsg] = useState<string>("");
+
+  useEffect(() => {
+    const hashParams = getHashParams();
+    if (hashParams["error_description"]) {
+      setErrorMsg(hashParams["error_description"]);
+    }
+  }, []);
+
   async function submit(evt: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     evt.preventDefault();
     setLoading(true);
@@ -345,29 +353,34 @@ function ResetPasswordForm(p: LoginPageFormPropsRequestPasswordForm) {
 
   return (
     <form id="resetPasswordForm" className="w-96">
-      <div className="font-700 text-primary mt-4 text-center text-lg">
-        Enter a new password here
-      </div>
-      <div className="mt-4 mb-1 text-sm">New password</div>
-      <Input
-        type={"password"}
-        value={password}
-        onChange={(v) => setPassword(v.target.value)}
-        autoFocus
-      />
-      <div className="mt-4">
-        <Button
-          className="w-full"
-          onClick={submit}
-          type="submit"
-          form="resetPasswordForm"
-        >
-          Save
-        </Button>
-      </div>
-      {loading && <div className="mt-4 text-center">Resetting password...</div>}
-      {errorMsg && (
+      {errorMsg ? (
         <div className="text-error mt-4 text-center">{errorMsg}</div>
+      ) : (
+        <>
+          <div className="font-700 text-primary mt-4 text-center text-lg">
+            Enter a new password here
+          </div>
+          <div className="mt-4 mb-1 text-sm">New password</div>
+          <Input
+            type={"password"}
+            value={password}
+            onChange={(v) => setPassword(v.target.value)}
+            autoFocus
+          />
+          <div className="mt-4">
+            <Button
+              className="w-full"
+              onClick={submit}
+              type="submit"
+              form="resetPasswordForm"
+            >
+              Save
+            </Button>
+          </div>
+          {loading && (
+            <div className="mt-4 text-center">Resetting password...</div>
+          )}
+        </>
       )}
     </form>
   );
@@ -378,6 +391,9 @@ function ResetPasswordForm(p: LoginPageFormPropsRequestPasswordForm) {
 ///////////////////////////////////////////////////////////////////////////////////
 
 function getHashParams(): Record<string, string> {
+  if (typeof window === "undefined") {
+    return {};
+  }
   return window.location.hash
     .substring(1)
     .split("&")
