@@ -7,12 +7,22 @@ import { Input } from "./input";
 
 type LoginViewState = "signin" | "register" | "resetpasswordrequest";
 
-export type LoginPageProps = {
+export type LoginPageProps =
+  | LoginPagePropsSignInRegisterResetPasswordRequest
+  | LoginPagePropsResetPasswordForm;
+
+type LoginPagePropsSignInRegisterResetPasswordRequest = {
+  type: "login";
   supabase: SupabaseClient;
   logoLinkElement?: React.ReactElement;
-  resetPasswordRedirectUrl?: string;
-  showResetPasswordForm?: boolean;
-  afterResetPassword?: () => void;
+  resetPasswordRedirectUrl: string;
+};
+
+type LoginPagePropsResetPasswordForm = {
+  type: "resetpasswordform";
+  supabase: SupabaseClient;
+  logoLinkElement?: React.ReactElement;
+  afterResetPassword: () => void;
 };
 
 export function LoginPage(p: LoginPageProps) {
@@ -25,11 +35,10 @@ export function LoginPage(p: LoginPageProps) {
         {p.logoLinkElement && (
           <div className="w-full text-center">{p.logoLinkElement}</div>
         )}
-        {p.showResetPasswordForm ? (
+        {p.type === "resetpasswordform" ? (
           <ResetPasswordForm
             changeLoginViewState={(v) => setLoginViewState(v)}
             supabase={p.supabase}
-            resetPasswordRedirectUrl={p.resetPasswordRedirectUrl}
             afterResetPassword={p.afterResetPassword}
           />
         ) : (
@@ -64,14 +73,12 @@ export function LoginPage(p: LoginPageProps) {
 ///////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////
 
-type LoginPageFormProps = {
+type LoginPageFormPropsSignInRegister = {
   changeLoginViewState: (v: LoginViewState) => void;
   supabase: SupabaseClient;
-  resetPasswordRedirectUrl?: string;
-  afterResetPassword?: () => void;
 };
 
-function SignInForm(p: LoginPageFormProps) {
+function SignInForm(p: LoginPageFormPropsSignInRegister) {
   const [loading, setLoading] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -143,7 +150,7 @@ function SignInForm(p: LoginPageFormProps) {
   );
 }
 
-function RegisterForm(p: LoginPageFormProps) {
+function RegisterForm(p: LoginPageFormPropsSignInRegister) {
   const [loading, setLoading] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -221,12 +228,18 @@ function RegisterForm(p: LoginPageFormProps) {
   );
 }
 
+type LoginPageFormPropsResetPasswordRequest = {
+  changeLoginViewState: (v: LoginViewState) => void;
+  supabase: SupabaseClient;
+  resetPasswordRedirectUrl: string;
+};
+
 type ResetPasswordRequestViewState =
   | "userentry"
   | "sending"
   | "finishedsending";
 
-function ResetPasswordRequest(p: LoginPageFormProps) {
+function ResetPasswordRequest(p: LoginPageFormPropsResetPasswordRequest) {
   const [loading, setLoading] =
     useState<ResetPasswordRequestViewState>("userentry");
   const [email, setEmail] = useState<string>("");
@@ -300,7 +313,13 @@ function ResetPasswordRequest(p: LoginPageFormProps) {
   );
 }
 
-function ResetPasswordForm(p: LoginPageFormProps) {
+type LoginPageFormPropsRequestPasswordForm = {
+  changeLoginViewState: (v: LoginViewState) => void;
+  supabase: SupabaseClient;
+  afterResetPassword: () => void;
+};
+
+function ResetPasswordForm(p: LoginPageFormPropsRequestPasswordForm) {
   const [loading, setLoading] = useState<boolean>(false);
   const [password, setPassword] = useState<string>("");
   const [errorMsg, setErrorMsg] = useState<string>("");
