@@ -3,7 +3,7 @@
 import { SupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { useEffect, useState } from "react";
 import { Button } from "./button";
-import { Input } from "./input";
+import { InputWithLabel } from "./input";
 
 type LoginViewState = "signin" | "register" | "resetpasswordrequest";
 
@@ -30,8 +30,8 @@ export function LoginPage(p: LoginPageProps) {
     useState<LoginViewState>("signin");
 
   return (
-    <main className="flex h-screen w-screen items-start justify-center">
-      <div className="bg-base-200 mt-24 rounded py-10 px-12">
+    <main className="flex h-screen w-full items-start justify-center">
+      <div className="bg-base-200 text-base-content text-400 min-h-full w-full space-y-4 rounded py-10 px-12 sm:mt-24 sm:min-h-0 sm:w-96">
         {p.logoLinkElement && (
           <div className="w-full text-center">{p.logoLinkElement}</div>
         )}
@@ -92,59 +92,53 @@ function SignInForm(p: LoginPageFormPropsSignInRegister) {
       password: password || "eptept",
     });
     if (error || !data.session) {
-      setLoading(false);
       setErrorMsg(error?.message ?? "Problem with sign in");
+      setLoading(false);
     }
-    console.log(data, error);
   }
 
   return (
-    <form id="signInForm" className="w-96">
-      <div className="font-700 text-primary mt-4 text-center text-lg">
-        Sign in to use the app
-      </div>
-      <div className="mt-4 mb-1 text-sm">Email</div>
-      <Input
-        type="email"
-        value={email}
-        onChange={(v) => setEmail(v.target.value)}
-        autoFocus
-      />
-      <div className="mt-3 mb-1 text-sm">Password</div>
-      <Input
-        type={"password"}
-        value={password}
-        onChange={(v) => setPassword(v.target.value)}
-      />
-      <div className="mt-4">
-        <Button
-          className="w-full"
-          onClick={submit}
-          type="submit"
-          form="signInForm"
-        >
-          Sign in
-        </Button>
-      </div>
-      <div className="mt-4 text-center">
-        <span
-          className="cursor-pointer hover:underline"
-          onClick={() => p.changeLoginViewState("register")}
-        >
-          Don't have an account?
-        </span>
-      </div>
-      <div className="mt-4 text-center">
-        <span
-          className="cursor-pointer hover:underline"
-          onClick={() => p.changeLoginViewState("resetpasswordrequest")}
-        >
-          Forgot password?
-        </span>
-      </div>
-      {loading && <div className="mt-4 text-center">Signing in...</div>}
-      {errorMsg && (
-        <div className="text-error mt-4 text-center">{errorMsg}</div>
+    <form id="signInForm" className="space-y-4">
+      <FormHeader>Sign in to use the app</FormHeader>
+      {loading ? (
+        <div className="text-center">Signing in...</div>
+      ) : (
+        <>
+          <InputWithLabel
+            rootId="email"
+            label="Email"
+            type="email"
+            value={email}
+            onChange={(v) => setEmail(v.target.value)}
+            autoFocus
+          />
+          <InputWithLabel
+            rootId="password"
+            label="Password"
+            type="password"
+            value={password}
+            onChange={(v) => setPassword(v.target.value)}
+          />
+          <Button
+            className="w-full"
+            type="submit"
+            form="signInForm"
+            onClick={submit}
+          >
+            Sign in
+          </Button>
+          {errorMsg && <div className="text-error text-center">{errorMsg}</div>}
+          <div className="space-y-2">
+            <SpanButton onClick={() => p.changeLoginViewState("register")}>
+              Don't have an account?
+            </SpanButton>
+            <SpanButton
+              onClick={() => p.changeLoginViewState("resetpasswordrequest")}
+            >
+              Forgot password?
+            </SpanButton>
+          </div>
+        </>
       )}
     </form>
   );
@@ -166,63 +160,60 @@ function RegisterForm(p: LoginPageFormPropsSignInRegister) {
       password: password || "eptept",
     });
     if (error || !data.session) {
+      setErrorMsg(error?.message ?? "Problem creating an account");
       setLoading(false);
-      setErrorMsg(error?.message ?? "Problem with sign in");
     }
-    console.log(data, error);
   }
 
   return (
-    <form id="registerForm" className="w-96">
-      <div className="font-700 text-primary mt-4 text-center text-lg">
-        Create an account for the app
-      </div>
-      <div className="mt-4 mb-1 text-sm">Email</div>
-      <Input
-        type="email"
-        value={email}
-        onChange={(v) => setEmail(v.target.value)}
-        autoFocus
-      />
-      <div className="mt-3 mb-1 text-sm">Password</div>
-      <Input
-        type={"password"}
-        value={password}
-        onChange={(v) => setPassword(v.target.value)}
-      />
-      <div className="mt-3 mb-1 text-sm">First name</div>
-      <Input
-        type="text"
-        value={firstName}
-        onChange={(v) => setFirstName(v.target.value)}
-      />
-      <div className="mt-3 mb-1 text-sm">Last name</div>
-      <Input
-        type="text"
-        value={lastName}
-        onChange={(v) => setLastName(v.target.value)}
-      />
-      <div className="mt-4">
-        <Button
-          className="w-full"
-          onClick={submit}
-          type="submit"
-          form="registerForm"
-        >
-          Register
-        </Button>
-      </div>
-      <div className="mt-4 text-center">
-        <span
-          className="cursor-pointer hover:underline"
-          onClick={() => p.changeLoginViewState("signin")}
-        >
-          Already have an account?
-        </span>
-      </div>
-      {loading && <div className="mt-4 text-center">Signing in...</div>}
-      {errorMsg && (
-        <div className="text-error mt-4 text-center">{errorMsg}</div>
+    <form id="registerForm" className="space-y-4">
+      <FormHeader>Create an account to use the app</FormHeader>
+      {loading ? (
+        <div className="text-center">Creating an account...</div>
+      ) : (
+        <>
+          <InputWithLabel
+            rootId="email"
+            label="Email"
+            type="email"
+            value={email}
+            onChange={(v) => setEmail(v.target.value)}
+            autoFocus
+          />
+          <InputWithLabel
+            rootId="password"
+            label="Password"
+            type="password"
+            value={password}
+            onChange={(v) => setPassword(v.target.value)}
+          />
+          <InputWithLabel
+            rootId="firstName"
+            label="First name"
+            type="text"
+            value={firstName}
+            onChange={(v) => setFirstName(v.target.value)}
+          />
+          <InputWithLabel
+            rootId="lastName"
+            label="Last name"
+            type="text"
+            value={lastName}
+            onChange={(v) => setLastName(v.target.value)}
+          />
+          <Button
+            className="w-full"
+            type="submit"
+            form="registerForm"
+            onClick={submit}
+          >
+            Create account
+          </Button>
+          {errorMsg && <div className="text-error text-center">{errorMsg}</div>}
+          <SpanButton onClick={() => p.changeLoginViewState("signin")}>
+            Already have an account?
+          </SpanButton>
+        </>
       )}
     </form>
   );
@@ -240,74 +231,61 @@ type ResetPasswordRequestViewState =
   | "finishedsending";
 
 function ResetPasswordRequest(p: LoginPageFormPropsResetPasswordRequest) {
-  const [loading, setLoading] =
+  const [rprViewState, setRprViewState] =
     useState<ResetPasswordRequestViewState>("userentry");
   const [email, setEmail] = useState<string>("");
   const [errorMsg, setErrorMsg] = useState<string>("");
   async function submit(evt: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     evt.preventDefault();
-    setLoading("sending");
+    setRprViewState("sending");
     setErrorMsg("");
-    const { data, error } = await p.supabase.auth.resetPasswordForEmail(
-      email || "timroberton@gmail.com",
-      {
-        redirectTo: p.resetPasswordRedirectUrl,
-      }
-    );
+    const { error } = await p.supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: p.resetPasswordRedirectUrl,
+    });
     if (error) {
-      setLoading("userentry");
-      setErrorMsg(
-        error?.message ?? "Problem with sending reset password email"
-      );
+      setRprViewState("userentry");
+      setErrorMsg(error?.message ?? "Problem sending email");
       return;
     }
-    setLoading("finishedsending");
+    setRprViewState("finishedsending");
   }
 
   return (
-    <form id="resetPasswordRequestForm" className="w-96">
-      {(loading === "userentry" || loading === "sending") && (
+    <form id="resetPasswordRequestForm" className="space-y-4">
+      <FormHeader>Reset your password</FormHeader>
+      {rprViewState === "finishedsending" ? (
+        <div className="text-center">
+          Email sent! Check your email for a link to reset your password.
+        </div>
+      ) : rprViewState === "sending" ? (
+        <div className="text-center">Sending email...</div>
+      ) : (
         <>
-          <div className="font-700 text-primary mt-4 text-center text-lg">
-            Reset your password
+          <div className="text-base-content-lighter text-sm">
+            Send a link to your email account, which you can use to reset your
+            password.
           </div>
-          <div className="mt-4 mb-1 text-sm">Email</div>
-          <Input
+          <InputWithLabel
+            rootId="email"
+            label="Email"
             type="email"
             value={email}
             onChange={(v) => setEmail(v.target.value)}
             autoFocus
           />
-          <div className="mt-4">
-            <Button
-              className="w-full"
-              onClick={submit}
-              type="submit"
-              form="resetPasswordRequestForm"
-            >
-              Send email with link
-            </Button>
-          </div>
-          <div className="mt-4 text-center">
-            <span
-              className="cursor-pointer hover:underline"
-              onClick={() => p.changeLoginViewState("signin")}
-            >
-              Remember your password?
-            </span>
-          </div>
-          {loading === "sending" && (
-            <div className="mt-4 text-center">Sending email...</div>
-          )}
-          {errorMsg && (
-            <div className="text-error mt-4 text-center">{errorMsg}</div>
-          )}
+          <Button
+            className="w-full"
+            onClick={submit}
+            type="submit"
+            form="resetPasswordRequestForm"
+          >
+            Send email
+          </Button>
+          {errorMsg && <div className="text-error text-center">{errorMsg}</div>}
+          <SpanButton onClick={() => p.changeLoginViewState("signin")}>
+            Remember your password?
+          </SpanButton>
         </>
-      )}
-      {loading === "finishedsending" && (
-        <div className="mt-4 text-center">
-          Email sent! Check your email for a link to reset your password.
-        </div>
       )}
     </form>
   );
@@ -322,64 +300,73 @@ type LoginPageFormPropsRequestPasswordForm = {
 function ResetPasswordForm(p: LoginPageFormPropsRequestPasswordForm) {
   const [loading, setLoading] = useState<boolean>(false);
   const [password, setPassword] = useState<string>("");
-  const [errorMsg, setErrorMsg] = useState<string>("");
+  const [linkErrorMsg, setLinkErrorMsg] = useState<string>("");
+  const [userErrorMsg, setUserErrorMsg] = useState<string>("");
 
   useEffect(() => {
     // Try to get error message from url (i.e. from supabase)
     const hashParams = getHashParams();
     if (hashParams["error_description"]) {
-      setErrorMsg(hashParams["error_description"]);
+      setLinkErrorMsg(hashParams["error_description"]);
     }
   }, []);
 
   async function submit(evt: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     evt.preventDefault();
+    // Try to get error message from url (i.e. from supabase)
+    const hashParams = getHashParams();
+    if (hashParams["error_description"]) {
+      setLinkErrorMsg(hashParams["error_description"]);
+      return;
+    }
     setLoading(true);
-    setErrorMsg("");
-    const { data, error } = await p.supabase.auth.updateUser({
-      password: password || "eptept",
+    setUserErrorMsg("");
+    const { error } = await p.supabase.auth.updateUser({
+      password: password,
     });
     if (error) {
-      // Try to get error message from url (i.e. from supabase)
-      const hashParams = getHashParams();
-      setErrorMsg(
-        hashParams["error_description"] ??
-          error?.message ??
-          "Problem with updating password"
-      );
+      if (error?.message === "Auth session missing!") {
+        setLinkErrorMsg("Email link is invalid or has expired");
+        return;
+      }
+      setUserErrorMsg(error?.message ?? "Problem resetting password");
+      setLoading(false);
       return;
     }
     p.afterResetPassword();
   }
 
   return (
-    <form id="resetPasswordForm" className="w-96">
-      {errorMsg ? (
-        <div className="text-error mt-4 text-center">{errorMsg}</div>
+    <form id="resetPasswordForm" className="space-y-4">
+      {linkErrorMsg ? (
+        <div className="text-error text-center">{linkErrorMsg}</div>
       ) : (
         <>
-          <div className="font-700 text-primary mt-4 text-center text-lg">
-            Enter a new password here
-          </div>
-          <div className="mt-4 mb-1 text-sm">New password</div>
-          <Input
-            type={"password"}
-            value={password}
-            onChange={(v) => setPassword(v.target.value)}
-            autoFocus
-          />
-          <div className="mt-4">
-            <Button
-              className="w-full"
-              onClick={submit}
-              type="submit"
-              form="resetPasswordForm"
-            >
-              Save
-            </Button>
-          </div>
-          {loading && (
-            <div className="mt-4 text-center">Resetting password...</div>
+          <FormHeader>Enter a new password here</FormHeader>
+          {loading ? (
+            <div className="text-center">Resetting password...</div>
+          ) : (
+            <>
+              <InputWithLabel
+                rootId="newPassword"
+                label="New password"
+                type={"password"}
+                value={password}
+                onChange={(v) => setPassword(v.target.value)}
+                autoFocus
+              />
+              <Button
+                className="w-full"
+                onClick={submit}
+                type="submit"
+                form="resetPasswordForm"
+              >
+                Save
+              </Button>
+              {userErrorMsg && (
+                <div className="text-error text-center">{userErrorMsg}</div>
+              )}
+            </>
           )}
         </>
       )}
@@ -405,4 +392,25 @@ function getHashParams(): Record<string, string> {
       }
       return params;
     }, {});
+}
+
+function SpanButton(p: { onClick: () => void; children: React.ReactNode }) {
+  return (
+    <div className="text-center">
+      <span
+        className="text-base-content-lighter cursor-pointer text-sm hover:underline"
+        onClick={p.onClick}
+      >
+        {p.children}
+      </span>
+    </div>
+  );
+}
+
+function FormHeader(p: { children: React.ReactNode }) {
+  return (
+    <div className="font-700 text-primary text-center text-lg">
+      {p.children}
+    </div>
+  );
 }
