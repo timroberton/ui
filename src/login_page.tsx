@@ -108,6 +108,7 @@ function SignInForm(p: LoginPageFormPropsSignInRegister) {
             rootId="email"
             label="Email"
             type="email"
+            autoComplete="email"
             value={email}
             onChange={(v) => setEmail(v.target.value)}
             autoFocus
@@ -116,6 +117,7 @@ function SignInForm(p: LoginPageFormPropsSignInRegister) {
             rootId="password"
             label="Password"
             type="password"
+            autoComplete="current-password"
             value={password}
             onChange={(v) => setPassword(v.target.value)}
           />
@@ -176,6 +178,7 @@ function RegisterForm(p: LoginPageFormPropsSignInRegister) {
             rootId="email"
             label="Email"
             type="email"
+            autoComplete="email"
             value={email}
             onChange={(v) => setEmail(v.target.value)}
             autoFocus
@@ -184,6 +187,7 @@ function RegisterForm(p: LoginPageFormPropsSignInRegister) {
             rootId="password"
             label="Password"
             type="password"
+            autoComplete="new-password"
             value={password}
             onChange={(v) => setPassword(v.target.value)}
           />
@@ -191,6 +195,7 @@ function RegisterForm(p: LoginPageFormPropsSignInRegister) {
             rootId="firstName"
             label="First name"
             type="text"
+            autoComplete="given-name"
             value={firstName}
             onChange={(v) => setFirstName(v.target.value)}
           />
@@ -198,6 +203,7 @@ function RegisterForm(p: LoginPageFormPropsSignInRegister) {
             rootId="lastName"
             label="Last name"
             type="text"
+            autoComplete="family-name"
             value={lastName}
             onChange={(v) => setLastName(v.target.value)}
           />
@@ -269,6 +275,7 @@ function ResetPasswordRequest(p: LoginPageFormPropsResetPasswordRequest) {
             rootId="email"
             label="Email"
             type="email"
+            autoComplete="email"
             value={email}
             onChange={(v) => setEmail(v.target.value)}
             autoFocus
@@ -351,6 +358,7 @@ function ResetPasswordForm(p: LoginPageFormPropsRequestPasswordForm) {
                 rootId="newPassword"
                 label="New password"
                 type={"password"}
+                autoComplete="new-password"
                 value={password}
                 onChange={(v) => setPassword(v.target.value)}
                 autoFocus
