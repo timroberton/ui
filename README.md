@@ -28,19 +28,19 @@ module.exports = {
       //
       primary: c1[500],
       "primary-focus": c1[600],
-      "primary-content": "#ffffff",
+      "primary-content": colors.white,
       //
       secondary: c2[500],
       "secondary-focus": c2[600],
-      "secondary-content": "#ffffff",
+      "secondary-content": colors.white,
       //
       accent: c3[500],
       "accent-focus": c3[600],
-      "accent-content": "#ffffff",
+      "accent-content": colors.white,
       //
       neutral: n1[500],
       "neutral-focus": n1[600],
-      "neutral-content": "#ffffff",
+      "neutral-content": colors.white,
       //
       "base-100": n1[50],
       "base-200": n1[100],
@@ -50,15 +50,15 @@ module.exports = {
       //
       success: colors.green[500],
       "success-focus": colors.green[600],
-      "success-content": colors.green[100],
+      "success-content": colors.white,
       //
       warning: colors.orange[500],
       "warning-focus": colors.orange[600],
-      "warning-content": "#000000",
+      "warning-content": colors.white,
       //
       error: colors.red[500],
       "error-focus": colors.red[600],
-      "error-content": colors.red[100],
+      "error-content": colors.white,
     },
     borderRadius: {
       DEFAULT: "3px",
@@ -73,4 +73,5 @@ module.exports = {
   },
   plugins: [require("@tailwindcss/forms")],
 };
+
 ```
