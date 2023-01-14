@@ -40,8 +40,16 @@ export default function AlertProvider(_a) {
             });
         });
     }
+    function openComponent(v) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, new Promise(function (resolve, reject) {
+                        setAlertState(__assign(__assign({}, v), { stateType: "component", componentResolver: resolve }));
+                    })];
+            });
+        });
+    }
     function cancelAny() {
-        setAlertState(undefined);
         if ((alertState === null || alertState === void 0 ? void 0 : alertState.stateType) === "alert") {
             alertState.alertResolver();
         }
@@ -51,23 +59,30 @@ export default function AlertProvider(_a) {
         if ((alertState === null || alertState === void 0 ? void 0 : alertState.stateType) === "prompt") {
             alertState.promptResolver(undefined);
         }
+        if ((alertState === null || alertState === void 0 ? void 0 : alertState.stateType) === "component") {
+            alertState.componentResolver(undefined);
+        }
+        setAlertState(undefined);
     }
-    return (_jsxs(Context.Provider, __assign({ value: { openAlert: openAlert, openConfirm: openConfirm, openPrompt: openPrompt } }, { children: [children, _jsxs(Dialog, __assign({ open: !!alertState, onClose: cancelAny, className: "relative z-50" }, { children: [_jsx("div", { className: "fixed inset-0 bg-black/30", "aria-hidden": "true" }, void 0), _jsx("div", __assign({ className: "fixed inset-0 flex items-center justify-center p-4" }, { children: _jsxs(Dialog.Panel, __assign({ className: "bg-base-100 mx-auto max-w-lg rounded px-10 py-8" }, { children: [(alertState === null || alertState === void 0 ? void 0 : alertState.title) && (_jsx(Dialog.Title, __assign({ className: "font-700 mb-2 text-lg " + ((alertState === null || alertState === void 0 ? void 0 : alertState.intent) === "danger" ? "text-error" : "") }, { children: alertState.title }), void 0)), _jsx("p", __assign({ className: "mb-4" }, { children: alertState === null || alertState === void 0 ? void 0 : alertState.text }), void 0), (alertState === null || alertState === void 0 ? void 0 : alertState.stateType) === "alert" && (_jsx("div", __assign({ className: "" }, { children: _jsx(Button, __assign({ onClick: function () {
-                                            setAlertState(undefined);
-                                            alertState.alertResolver();
-                                        }, intent: alertState.intent }, { children: (_b = alertState.closeButtonLabel) !== null && _b !== void 0 ? _b : "Close" }), void 0) }), void 0)), (alertState === null || alertState === void 0 ? void 0 : alertState.stateType) === "confirm" && (_jsxs("div", __assign({ className: "" }, { children: [_jsx(Button, __assign({ onClick: function () {
+    return (_jsxs(Context.Provider, __assign({ value: { openAlert: openAlert, openConfirm: openConfirm, openPrompt: openPrompt, openComponent: openComponent } }, { children: [children, _jsxs(Dialog, __assign({ open: !!alertState, onClose: cancelAny, className: "relative z-50" }, { children: [_jsx("div", { className: "fixed inset-0 bg-black/30", "aria-hidden": "true" }, void 0), _jsx("div", __assign({ className: "fixed inset-0 flex items-center justify-center p-4" }, { children: _jsx(Dialog.Panel, __assign({ className: "bg-base-100 mx-auto max-w-lg rounded px-10 py-8" }, { children: (alertState === null || alertState === void 0 ? void 0 : alertState.stateType) === "component" ? (_jsx(alertState.element, { close: function (p) {
+                                    setAlertState(undefined);
+                                    alertState.componentResolver(p);
+                                } }, void 0)) : (_jsxs(_Fragment, { children: [(alertState === null || alertState === void 0 ? void 0 : alertState.title) && (_jsx(Dialog.Title, __assign({ className: "font-700 mb-2 text-lg " + ((alertState === null || alertState === void 0 ? void 0 : alertState.intent) === "danger" ? "text-error" : "") }, { children: alertState.title }), void 0)), _jsx("p", __assign({ className: "mb-4" }, { children: alertState === null || alertState === void 0 ? void 0 : alertState.text }), void 0), (alertState === null || alertState === void 0 ? void 0 : alertState.stateType) === "alert" && (_jsx("div", __assign({ className: "" }, { children: _jsx(Button, __assign({ onClick: function () {
                                                 setAlertState(undefined);
-                                                alertState.confirmResolver(true);
-                                            }, intent: alertState.intent }, { children: (_c = alertState.confirmButtonLabel) !== null && _c !== void 0 ? _c : "Confirm" }), void 0), _jsx(Button, __assign({ onClick: function () {
-                                                setAlertState(undefined);
-                                                alertState.confirmResolver(false);
-                                            }, intent: "neutral", margin: "left" }, { children: "Cancel" }), void 0)] }), void 0)), (alertState === null || alertState === void 0 ? void 0 : alertState.stateType) === "prompt" && (_jsx(_Fragment, { children: _jsxs("form", __assign({ id: "promptForm", className: "" }, { children: [_jsx("div", __assign({ className: "mb-4 w-96" }, { children: _jsx(Input, { type: "text", value: promptInput, onChange: function (v) { return setPromptInput(v.target.value); }, autoFocus: true }, void 0) }), void 0), _jsxs("div", __assign({ className: "" }, { children: [_jsx(Button, __assign({ type: "submit", form: "promptForm", onClick: function () {
-                                                            setAlertState(undefined);
-                                                            alertState.promptResolver(promptInput);
-                                                        }, intent: alertState.intent }, { children: (_d = alertState.saveButtonLabel) !== null && _d !== void 0 ? _d : "Confirm" }), void 0), _jsx(Button, __assign({ type: "button", onClick: function () {
-                                                            setAlertState(undefined);
-                                                            alertState.promptResolver(undefined);
-                                                        }, intent: "neutral", margin: "left" }, { children: "Cancel" }), void 0)] }), void 0)] }), void 0) }, void 0))] }), void 0) }), void 0)] }), void 0)] }), void 0));
+                                                alertState.alertResolver();
+                                            }, intent: alertState.intent }, { children: (_b = alertState.closeButtonLabel) !== null && _b !== void 0 ? _b : "Close" }), void 0) }), void 0)), (alertState === null || alertState === void 0 ? void 0 : alertState.stateType) === "confirm" && (_jsxs("div", __assign({ className: "" }, { children: [_jsx(Button, __assign({ onClick: function () {
+                                                    setAlertState(undefined);
+                                                    alertState.confirmResolver(true);
+                                                }, intent: alertState.intent }, { children: (_c = alertState.confirmButtonLabel) !== null && _c !== void 0 ? _c : "Confirm" }), void 0), _jsx(Button, __assign({ onClick: function () {
+                                                    setAlertState(undefined);
+                                                    alertState.confirmResolver(false);
+                                                }, intent: "neutral", margin: "left" }, { children: "Cancel" }), void 0)] }), void 0)), (alertState === null || alertState === void 0 ? void 0 : alertState.stateType) === "prompt" && (_jsx(_Fragment, { children: _jsxs("form", __assign({ id: "promptForm", className: "" }, { children: [_jsx("div", __assign({ className: "mb-4 w-96" }, { children: _jsx(Input, { type: "text", value: promptInput, onChange: function (v) { return setPromptInput(v.target.value); }, autoFocus: true }, void 0) }), void 0), _jsxs("div", __assign({ className: "" }, { children: [_jsx(Button, __assign({ type: "submit", form: "promptForm", onClick: function () {
+                                                                setAlertState(undefined);
+                                                                alertState.promptResolver(promptInput);
+                                                            }, intent: alertState.intent }, { children: (_d = alertState.saveButtonLabel) !== null && _d !== void 0 ? _d : "Confirm" }), void 0), _jsx(Button, __assign({ type: "button", onClick: function () {
+                                                                setAlertState(undefined);
+                                                                alertState.promptResolver(undefined);
+                                                            }, intent: "neutral", margin: "left" }, { children: "Cancel" }), void 0)] }), void 0)] }), void 0) }, void 0))] }, void 0)) }), void 0) }), void 0)] }), void 0)] }), void 0));
 }
 export var useAlert = function () { return useContext(Context); };
 //# sourceMappingURL=alert.js.map

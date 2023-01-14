@@ -1,27 +1,33 @@
 import React from "react";
-declare type OpenAlertInputType = {
+declare type OpenAlertInput = {
     title?: string;
     text: string;
     intent?: "danger";
     closeButtonLabel?: string;
 };
-declare type OpenConfirmInputType = {
+declare type OpenConfirmInput = {
     title?: string;
     text: string;
     intent?: "danger";
     confirmButtonLabel?: string;
 };
-declare type OpenPromptInputType = {
+declare type OpenPromptInput = {
     title?: string;
     text: string;
     initialInputText: string;
     intent?: "danger";
     saveButtonLabel?: string;
 };
+declare type OpenComponentInput = {
+    element: (p: {
+        close: (p: any) => void;
+    }) => React.ReactElement;
+};
 export declare type AlertContext = {
-    openAlert(v: OpenAlertInputType): Promise<void>;
-    openConfirm(v: OpenConfirmInputType): Promise<boolean>;
-    openPrompt(v: OpenPromptInputType): Promise<string | undefined>;
+    openAlert(v: OpenAlertInput): Promise<void>;
+    openConfirm(v: OpenConfirmInput): Promise<boolean>;
+    openPrompt(v: OpenPromptInput): Promise<string | undefined>;
+    openComponent(v: OpenComponentInput): Promise<any>;
 };
 export default function AlertProvider({ children, }: {
     children: React.ReactNode;

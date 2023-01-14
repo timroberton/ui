@@ -5,21 +5,21 @@ import React, { createContext, useContext, useState } from "react";
 import { Button } from "./button";
 import { Input } from "./input";
 
-type OpenAlertInputType = {
+type OpenAlertInput = {
   title?: string;
   text: string;
   intent?: "danger";
   closeButtonLabel?: string;
 };
 
-type OpenConfirmInputType = {
+type OpenConfirmInput = {
   title?: string;
   text: string;
   intent?: "danger";
   confirmButtonLabel?: string;
 };
 
-type OpenPromptInputType = {
+type OpenPromptInput = {
   title?: string;
   text: string;
   initialInputText: string;
@@ -27,25 +27,35 @@ type OpenPromptInputType = {
   saveButtonLabel?: string;
 };
 
-type AlertStateType = OpenAlertInputType & {
+type OpenComponentInput = {
+  element: (p: { close: (p: any) => void }) => React.ReactElement;
+};
+
+type AlertStateType = OpenAlertInput & {
   stateType: "alert";
   alertResolver(): void;
 };
 
-type ConfirmStateType = OpenConfirmInputType & {
+type ConfirmStateType = OpenConfirmInput & {
   stateType: "confirm";
-  confirmResolver(value: boolean): void;
+  confirmResolver(v: boolean): void;
 };
 
-type PromptStateType = OpenPromptInputType & {
+type PromptStateType = OpenPromptInput & {
   stateType: "prompt";
-  promptResolver(value: string | undefined): void;
+  promptResolver(v: string | undefined): void;
+};
+
+type ComponentStateType = OpenComponentInput & {
+  stateType: "component";
+  componentResolver(v: any): void;
 };
 
 export type AlertContext = {
-  openAlert(v: OpenAlertInputType): Promise<void>;
-  openConfirm(v: OpenConfirmInputType): Promise<boolean>;
-  openPrompt(v: OpenPromptInputType): Promise<string | undefined>;
+  openAlert(v: OpenAlertInput): Promise<void>;
+  openConfirm(v: OpenConfirmInput): Promise<boolean>;
+  openPrompt(v: OpenPromptInput): Promise<string | undefined>;
+  openComponent(v: OpenComponentInput): Promise<any>;
 };
 
 //@ts-ignore
@@ -57,11 +67,15 @@ export default function AlertProvider({
   children: React.ReactNode;
 }) {
   const [alertState, setAlertState] = useState<
-    AlertStateType | ConfirmStateType | PromptStateType | undefined
+    | AlertStateType
+    | ConfirmStateType
+    | PromptStateType
+    | ComponentStateType
+    | undefined
   >(undefined);
   const [promptInput, setPromptInput] = useState<string>("");
 
-  async function openAlert(v: OpenAlertInputType): Promise<void> {
+  async function openAlert(v: OpenAlertInput): Promise<void> {
     return new Promise((resolve: () => void, reject) => {
       setAlertState({
         ...v,
@@ -71,7 +85,7 @@ export default function AlertProvider({
     });
   }
 
-  async function openConfirm(v: OpenConfirmInputType): Promise<boolean> {
+  async function openConfirm(v: OpenConfirmInput): Promise<boolean> {
     return new Promise<boolean>((resolve: (p: boolean) => void, reject) => {
       setAlertState({
         ...v,
@@ -81,9 +95,7 @@ export default function AlertProvider({
     });
   }
 
-  async function openPrompt(
-    v: OpenPromptInputType
-  ): Promise<string | undefined> {
+  async function openPrompt(v: OpenPromptInput): Promise<string | undefined> {
     return new Promise<string | undefined>(
       (resolve: (p: string | undefined) => void, reject) => {
         setPromptInput(v.initialInputText);
@@ -96,8 +108,17 @@ export default function AlertProvider({
     );
   }
 
+  async function openComponent(v: OpenComponentInput): Promise<any> {
+    return new Promise<any>((resolve: (p: any) => void, reject) => {
+      setAlertState({
+        ...v,
+        stateType: "component",
+        componentResolver: resolve,
+      });
+    });
+  }
+
   function cancelAny() {
-    setAlertState(undefined);
     if (alertState?.stateType === "alert") {
       alertState.alertResolver();
     }
@@ -107,10 +128,16 @@ export default function AlertProvider({
     if (alertState?.stateType === "prompt") {
       alertState.promptResolver(undefined);
     }
+    if (alertState?.stateType === "component") {
+      alertState.componentResolver(undefined);
+    }
+    setAlertState(undefined);
   }
 
   return (
-    <Context.Provider value={{ openAlert, openConfirm, openPrompt }}>
+    <Context.Provider
+      value={{ openAlert, openConfirm, openPrompt, openComponent }}
+    >
       {children}
       {/* This is from Headless UI docs: https://headlessui.com/react/dialog */}
       <Dialog open={!!alertState} onClose={cancelAny} className="relative z-50">
@@ -120,80 +147,53 @@ export default function AlertProvider({
         {/* Full-screen container to center the panel */}
         <div className="fixed inset-0 flex items-center justify-center p-4">
           <Dialog.Panel className="bg-base-100 mx-auto max-w-lg rounded px-10 py-8">
-            {alertState?.title && (
-              <Dialog.Title
-                className={`font-700 mb-2 text-lg ${
-                  alertState?.intent === "danger" ? "text-error" : ""
-                }`}
-              >
-                {alertState.title}
-              </Dialog.Title>
-            )}
-            <p className="mb-4">{alertState?.text}</p>
-            {alertState?.stateType === "alert" && (
-              <div className="">
-                <Button
-                  onClick={() => {
-                    setAlertState(undefined);
-                    alertState.alertResolver();
-                  }}
-                  intent={alertState.intent}
-                >
-                  {alertState.closeButtonLabel ?? "Close"}
-                </Button>
-              </div>
-            )}
-            {alertState?.stateType === "confirm" && (
-              <div className="">
-                <Button
-                  onClick={() => {
-                    setAlertState(undefined);
-                    alertState.confirmResolver(true);
-                  }}
-                  intent={alertState.intent}
-                >
-                  {alertState.confirmButtonLabel ?? "Confirm"}
-                </Button>
-                <Button
-                  onClick={() => {
-                    setAlertState(undefined);
-                    alertState.confirmResolver(false);
-                  }}
-                  intent="neutral"
-                  margin="left"
-                >
-                  Cancel
-                </Button>
-              </div>
-            )}
-            {alertState?.stateType === "prompt" && (
+            {alertState?.stateType === "component" ? (
+              <alertState.element
+                close={(p: any) => {
+                  setAlertState(undefined);
+                  alertState.componentResolver(p);
+                }}
+              />
+            ) : (
               <>
-                <form id="promptForm" className="">
-                  <div className="mb-4 w-96">
-                    <Input
-                      type="text"
-                      value={promptInput}
-                      onChange={(v) => setPromptInput(v.target.value)}
-                      autoFocus
-                    />
-                  </div>
+                {alertState?.title && (
+                  <Dialog.Title
+                    className={`font-700 mb-2 text-lg ${
+                      alertState?.intent === "danger" ? "text-error" : ""
+                    }`}
+                  >
+                    {alertState.title}
+                  </Dialog.Title>
+                )}
+                <p className="mb-4">{alertState?.text}</p>
+                {alertState?.stateType === "alert" && (
                   <div className="">
                     <Button
-                      type="submit"
-                      form="promptForm"
                       onClick={() => {
                         setAlertState(undefined);
-                        alertState.promptResolver(promptInput);
+                        alertState.alertResolver();
                       }}
                       intent={alertState.intent}
                     >
-                      {alertState.saveButtonLabel ?? "Confirm"}
+                      {alertState.closeButtonLabel ?? "Close"}
                     </Button>
+                  </div>
+                )}
+                {alertState?.stateType === "confirm" && (
+                  <div className="">
                     <Button
-                      type="button"
                       onClick={() => {
                         setAlertState(undefined);
-                        alertState.promptResolver(undefined);
+                        alertState.confirmResolver(true);
+                      }}
+                      intent={alertState.intent}
+                    >
+                      {alertState.confirmButtonLabel ?? "Confirm"}
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        setAlertState(undefined);
+                        alertState.confirmResolver(false);
                       }}
                       intent="neutral"
                       margin="left"
@@ -201,7 +201,45 @@ export default function AlertProvider({
                       Cancel
                     </Button>
                   </div>
-                </form>
+                )}
+                {alertState?.stateType === "prompt" && (
+                  <>
+                    <form id="promptForm" className="">
+                      <div className="mb-4 w-96">
+                        <Input
+                          type="text"
+                          value={promptInput}
+                          onChange={(v) => setPromptInput(v.target.value)}
+                          autoFocus
+                        />
+                      </div>
+                      <div className="">
+                        <Button
+                          type="submit"
+                          form="promptForm"
+                          onClick={() => {
+                            setAlertState(undefined);
+                            alertState.promptResolver(promptInput);
+                          }}
+                          intent={alertState.intent}
+                        >
+                          {alertState.saveButtonLabel ?? "Confirm"}
+                        </Button>
+                        <Button
+                          type="button"
+                          onClick={() => {
+                            setAlertState(undefined);
+                            alertState.promptResolver(undefined);
+                          }}
+                          intent="neutral"
+                          margin="left"
+                        >
+                          Cancel
+                        </Button>
+                      </div>
+                    </form>
+                  </>
+                )}
               </>
             )}
           </Dialog.Panel>
