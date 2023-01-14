@@ -1,7 +1,7 @@
 import React from "react";
 import { VariantProps } from "class-variance-authority";
 export declare const getClassesForButton: (props?: {
-    intent?: "primary" | "secondary";
+    intent?: "primary" | "secondary" | "neutral" | "danger";
     size?: "medium" | "small";
     margin?: "left" | "right";
     showFocusedState?: boolean;

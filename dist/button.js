@@ -7,6 +7,8 @@ export var getClassesForButton = cva("inline-flex items-center justify-center ro
         intent: {
             primary: "bg-primary text-primary-content focus:ring-primary  hover:bg-primary-focus",
             secondary: "bg-secondary text-secondary-content focus:ring-secondary  hover:bg-secondary-focus",
+            neutral: "bg-neutral text-neutral-content focus:ring-neutral  hover:bg-neutral-focus",
+            danger: "bg-error text-error-content focus:ring-error  hover:bg-error-focus",
         },
         size: {
             small: "text-sm py-1 px-2",

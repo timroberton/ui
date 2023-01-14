@@ -22,7 +22,9 @@ module.exports = {
   ],
   theme: {
     colors: {
-      transparent: "transparent",
+      transparent: colors.transparent,
+      black: colors.black,
+      white: colors.white,
       //
       primary: c1[500],
       "primary-focus": c1[600],
