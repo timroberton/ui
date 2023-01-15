@@ -27,8 +27,13 @@ type OpenPromptInput = {
   saveButtonLabel?: string;
 };
 
-type OpenComponentInput = {
-  element: (p: { close: (p: any) => void }) => React.ReactElement;
+export type AlertComponentProps<TProps, TReturn> = TProps & {
+  close: (p: TReturn | undefined) => void;
+};
+
+type OpenComponentInput<TProps, TReturn> = {
+  elementProps: TProps;
+  element: (p: AlertComponentProps<TProps, TReturn>) => React.ReactElement;
 };
 
 type AlertStateType = OpenAlertInput & {
@@ -46,16 +51,21 @@ type PromptStateType = OpenPromptInput & {
   promptResolver(v: string | undefined): void;
 };
 
-type ComponentStateType = OpenComponentInput & {
+type ComponentStateType<TProps, TReturn> = OpenComponentInput<
+  TProps,
+  TReturn
+> & {
   stateType: "component";
-  componentResolver(v: any): void;
+  componentResolver(v: TReturn | undefined): void;
 };
 
 export type AlertContext = {
   openAlert(v: OpenAlertInput): Promise<void>;
   openConfirm(v: OpenConfirmInput): Promise<boolean>;
   openPrompt(v: OpenPromptInput): Promise<string | undefined>;
-  openComponent(v: OpenComponentInput): Promise<any>;
+  openComponent<TProps, TReturn>(
+    v: OpenComponentInput<TProps, TReturn>
+  ): Promise<TReturn | undefined>;
 };
 
 //@ts-ignore
@@ -70,7 +80,7 @@ export default function AlertProvider({
     | AlertStateType
     | ConfirmStateType
     | PromptStateType
-    | ComponentStateType
+    | ComponentStateType<any, any>
     | undefined
   >(undefined);
   const [promptInput, setPromptInput] = useState<string>("");
@@ -108,14 +118,18 @@ export default function AlertProvider({
     );
   }
 
-  async function openComponent(v: OpenComponentInput): Promise<any> {
-    return new Promise<any>((resolve: (p: any) => void, reject) => {
-      setAlertState({
-        ...v,
-        stateType: "component",
-        componentResolver: resolve,
-      });
-    });
+  async function openComponent<TProps, TReturn>(
+    v: OpenComponentInput<TProps, TReturn>
+  ): Promise<TReturn | undefined> {
+    return new Promise<TReturn>(
+      (resolve: (p: TReturn | undefined) => void, reject) => {
+        setAlertState({
+          ...v,
+          stateType: "component",
+          componentResolver: resolve,
+        });
+      }
+    );
   }
 
   function cancelAny() {
@@ -149,10 +163,11 @@ export default function AlertProvider({
           <Dialog.Panel className="bg-base-100 mx-auto max-w-lg rounded px-10 py-8">
             {alertState?.stateType === "component" ? (
               <alertState.element
-                close={(p: any) => {
+                close={(p) => {
                   setAlertState(undefined);
                   alertState.componentResolver(p);
                 }}
+                {...alertState.elementProps}
               />
             ) : (
               <>

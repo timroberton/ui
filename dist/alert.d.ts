@@ -18,16 +18,18 @@ declare type OpenPromptInput = {
     intent?: "danger";
     saveButtonLabel?: string;
 };
-declare type OpenComponentInput = {
-    element: (p: {
-        close: (p: any) => void;
-    }) => React.ReactElement;
+export declare type AlertComponentProps<TProps, TReturn> = TProps & {
+    close: (p: TReturn | undefined) => void;
+};
+declare type OpenComponentInput<TProps, TReturn> = {
+    elementProps: TProps;
+    element: (p: AlertComponentProps<TProps, TReturn>) => React.ReactElement;
 };
 export declare type AlertContext = {
     openAlert(v: OpenAlertInput): Promise<void>;
     openConfirm(v: OpenConfirmInput): Promise<boolean>;
     openPrompt(v: OpenPromptInput): Promise<string | undefined>;
-    openComponent(v: OpenComponentInput): Promise<any>;
+    openComponent<TProps, TReturn>(v: OpenComponentInput<TProps, TReturn>): Promise<TReturn | undefined>;
 };
 export default function AlertProvider({ children, }: {
     children: React.ReactNode;
