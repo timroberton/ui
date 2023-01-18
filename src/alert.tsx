@@ -121,7 +121,7 @@ export default function AlertProvider({
   async function openComponent<TProps, TReturn>(
     v: OpenComponentInput<TProps, TReturn>
   ): Promise<TReturn | undefined> {
-    return new Promise<TReturn>(
+    return new Promise<TReturn | undefined>(
       (resolve: (p: TReturn | undefined) => void, reject) => {
         setAlertState({
           ...v,
