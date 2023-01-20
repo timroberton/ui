@@ -3,7 +3,7 @@
 import { Dialog } from "@headlessui/react";
 import React, { createContext, useContext, useState } from "react";
 import { Button } from "./button";
-import { Input } from "./input";
+import { Input, InputWithLabel } from "./input";
 
 type OpenAlertInput = {
   title?: string;
@@ -20,9 +20,10 @@ type OpenConfirmInput = {
 };
 
 type OpenPromptInput = {
-  title?: string;
-  text: string;
   initialInputText: string;
+  title?: string;
+  text?: string;
+  inputLabel?: string;
   intent?: "danger";
   saveButtonLabel?: string;
 };
@@ -180,7 +181,7 @@ export default function AlertProvider({
                     {alertState.title}
                   </Dialog.Title>
                 )}
-                <p className="mb-4">{alertState?.text}</p>
+                {alertState?.text && <p className="mb-4">{alertState?.text}</p>}
                 {alertState?.stateType === "alert" && (
                   <div className="">
                     <Button
@@ -221,12 +222,23 @@ export default function AlertProvider({
                   <>
                     <form id="promptForm" className="">
                       <div className="mb-4 w-96">
-                        <Input
-                          type="text"
-                          value={promptInput}
-                          onChange={(v) => setPromptInput(v.target.value)}
-                          autoFocus
-                        />
+                        {alertState.inputLabel ? (
+                          <InputWithLabel
+                            rootId="prompt-input"
+                            label={alertState.inputLabel}
+                            type="text"
+                            value={promptInput}
+                            onChange={(v) => setPromptInput(v.target.value)}
+                            autoFocus
+                          />
+                        ) : (
+                          <Input
+                            type="text"
+                            value={promptInput}
+                            onChange={(v) => setPromptInput(v.target.value)}
+                            autoFocus
+                          />
+                        )}
                       </div>
                       <div className="">
                         <Button

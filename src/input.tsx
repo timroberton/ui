@@ -9,7 +9,10 @@ export const getClassesForInput = cva(
     variants: {
       intent: {
         primary: "focus:border-primary focus:ring-primary",
-        secondary: "focus:border-secondary focus:ring-primary",
+        secondary: "focus:border-secondary focus:ring-secondary",
+        success: "focus:border-success focus:ring-success",
+        warning: "focus:border-warning focus:ring-warning",
+        error: "focus:border-error focus:ring-error",
       },
       margin: {
         left: "ml-2",

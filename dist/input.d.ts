@@ -1,7 +1,7 @@
 import React from "react";
 import { VariantProps } from "class-variance-authority";
 export declare const getClassesForInput: (props?: {
-    intent?: "primary" | "secondary";
+    intent?: "primary" | "secondary" | "success" | "warning" | "error";
     margin?: "left" | "right";
 } & import("class-variance-authority/dist/types").ClassProp) => string;
 declare type InputProps = React.ComponentPropsWithoutRef<"input"> & VariantProps<typeof getClassesForInput>;

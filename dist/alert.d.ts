@@ -12,9 +12,10 @@ declare type OpenConfirmInput = {
     confirmButtonLabel?: string;
 };
 declare type OpenPromptInput = {
-    title?: string;
-    text: string;
     initialInputText: string;
+    title?: string;
+    text?: string;
+    inputLabel?: string;
     intent?: "danger";
     saveButtonLabel?: string;
 };
