@@ -24,6 +24,7 @@ type OpenPromptInput = {
   title?: string;
   text?: string;
   inputLabel?: string;
+  inputType?: React.ComponentPropsWithoutRef<"input">["type"];
   intent?: "danger";
   saveButtonLabel?: string;
 };
@@ -226,14 +227,14 @@ export default function AlertProvider({
                           <InputWithLabel
                             rootId="prompt-input"
                             label={alertState.inputLabel}
-                            type="text"
+                            type={alertState.inputType ?? "text"}
                             value={promptInput}
                             onChange={(v) => setPromptInput(v.target.value)}
                             autoFocus
                           />
                         ) : (
                           <Input
-                            type="text"
+                            type={alertState.inputType ?? "text"}
                             value={promptInput}
                             onChange={(v) => setPromptInput(v.target.value)}
                             autoFocus

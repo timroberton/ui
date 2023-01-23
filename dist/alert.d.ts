@@ -16,6 +16,7 @@ declare type OpenPromptInput = {
     title?: string;
     text?: string;
     inputLabel?: string;
+    inputType?: React.ComponentPropsWithoutRef<"input">["type"];
     intent?: "danger";
     saveButtonLabel?: string;
 };
