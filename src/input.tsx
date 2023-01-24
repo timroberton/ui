@@ -31,7 +31,13 @@ export const getClassesForInput = cva(
 type InputProps = React.ComponentPropsWithoutRef<"input"> &
   VariantProps<typeof getClassesForInput>;
 
-export function Input({ className, intent, margin, ...props }: InputProps) {
+export function Input({
+  className,
+  intent,
+  margin,
+  type,
+  ...props
+}: InputProps) {
   return (
     <input
       className={getClassesForInput({
@@ -39,6 +45,7 @@ export function Input({ className, intent, margin, ...props }: InputProps) {
         margin,
         className,
       })}
+      type={type ?? "text"}
       {...props}
     />
   );

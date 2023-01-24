@@ -5,7 +5,7 @@ export declare const getClassesForInput: (props?: {
     margin?: "left" | "right";
 } & import("class-variance-authority/dist/types").ClassProp) => string;
 declare type InputProps = React.ComponentPropsWithoutRef<"input"> & VariantProps<typeof getClassesForInput>;
-export declare function Input({ className, intent, margin, ...props }: InputProps): JSX.Element;
+export declare function Input({ className, intent, margin, type, ...props }: InputProps): JSX.Element;
 declare type InputWithLabelProps = InputProps & {
     rootId: string;
     label: string;

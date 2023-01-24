@@ -7,7 +7,7 @@ declare type OpenAlertInput = {
 };
 declare type OpenConfirmInput = {
     title?: string;
-    text: string;
+    text: string | JSX.Element;
     intent?: "danger";
     confirmButtonLabel?: string;
 };
