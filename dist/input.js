@@ -33,6 +33,6 @@ export function Input(_a) {
 }
 export function InputWithLabel(_a) {
     var label = _a.label, rootId = _a.rootId, props = __rest(_a, ["label", "rootId"]);
-    return (_jsxs("div", { children: [_jsx("label", __assign({ htmlFor: rootId, className: "text-base-content-lighter block text-sm" }, { children: label }), void 0), _jsx("div", __assign({ className: "mt-1" }, { children: _jsx(Input, __assign({ name: rootId }, props), void 0) }), void 0)] }, void 0));
+    return (_jsxs("div", { children: [_jsx("label", __assign({ htmlFor: rootId, className: "text-base-content-lighter block text-sm mb-1" }, { children: label }), void 0), _jsx("div", __assign({ className: "" }, { children: _jsx(Input, __assign({ name: rootId }, props), void 0) }), void 0)] }, void 0));
 }
 //# sourceMappingURL=input.js.map

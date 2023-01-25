@@ -4,11 +4,10 @@ export declare const getClassesForButton: (props?: {
     intent?: "primary" | "secondary" | "neutral" | "success" | "warning" | "danger";
     size?: "medium" | "small";
     margin?: "left" | "right";
-    showFocusedState?: boolean;
 } & import("class-variance-authority/dist/types").ClassProp) => string;
 declare type ButtonProps = React.ComponentPropsWithoutRef<"button"> & VariantProps<typeof getClassesForButton> & {
     children: React.ReactNode;
 };
-export declare function Button({ className, intent, size, margin, showFocusedState, ...props }: ButtonProps): JSX.Element;
+export declare function Button({ className, intent, size, margin, ...props }: ButtonProps): JSX.Element;
 export {};
 //# sourceMappingURL=button.d.ts.map

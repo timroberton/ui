@@ -2,7 +2,7 @@
 import { __assign, __rest } from "tslib";
 import { jsx as _jsx } from "react/jsx-runtime";
 import { cva } from "class-variance-authority";
-export var getClassesForButton = cva("inline-flex items-center justify-center rounded border border-transparent font-400 focus:outline-none", {
+export var getClassesForButton = cva("inline-flex items-center justify-center rounded border border-transparent font-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2", {
     variants: {
         intent: {
             primary: "bg-primary text-primary-content focus:ring-primary  hover:bg-primary-focus",
@@ -20,10 +20,6 @@ export var getClassesForButton = cva("inline-flex items-center justify-center ro
             left: "ml-2",
             right: "mr-2",
         },
-        showFocusedState: {
-            true: "focus:ring-2 focus:ring-offset-2",
-            false: "focus:ring-none",
-        },
     },
     // compoundVariants: [
     //   { intent: "primary", size: "medium", className: "uppercase" },
@@ -31,16 +27,14 @@ export var getClassesForButton = cva("inline-flex items-center justify-center ro
     defaultVariants: {
         intent: "primary",
         size: "medium",
-        showFocusedState: false,
     },
 });
 export function Button(_a) {
-    var className = _a.className, intent = _a.intent, size = _a.size, margin = _a.margin, showFocusedState = _a.showFocusedState, props = __rest(_a, ["className", "intent", "size", "margin", "showFocusedState"]);
+    var className = _a.className, intent = _a.intent, size = _a.size, margin = _a.margin, props = __rest(_a, ["className", "intent", "size", "margin"]);
     return (_jsx("button", __assign({ className: getClassesForButton({
             intent: intent,
             size: size,
             margin: margin,
-            showFocusedState: showFocusedState,
             className: className,
         }) }, props, { children: props.children }), void 0));
 }

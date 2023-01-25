@@ -16,7 +16,7 @@ export const getClassesForInput = cva(
       },
       margin: {
         left: "ml-2",
-        right: "mr-2",
+      right: "mr-2",
       },
     },
     // compoundVariants: [
@@ -62,11 +62,11 @@ export function InputWithLabel({
     <div>
       <label
         htmlFor={rootId}
-        className="text-base-content-lighter block text-sm"
+        className="text-base-content-lighter block text-sm mb-1"
       >
         {label}
       </label>
-      <div className="mt-1">
+      <div className="">
         <Input name={rootId} {...props} />
       </div>
     </div>
