@@ -170,7 +170,7 @@ export default function AlertProvider({
 
         {/* Full-screen container to center the panel */}
         <div className="fixed inset-0 flex items-center justify-center p-4">
-          <Dialog.Panel className="bg-base-100 mx-auto max-w-lg rounded px-10 py-8">
+          <Dialog.Panel className="mx-auto max-w-lg rounded bg-base-100 px-10 py-8">
             {alertState?.stateType === "component" ? (
               <alertState.element
                 close={(p) => {
@@ -183,7 +183,7 @@ export default function AlertProvider({
               <>
                 {alertState?.title && (
                   <Dialog.Title
-                    className={`font-700 mb-2 text-lg ${
+                    className={`mb-2 text-lg font-700 ${
                       alertState?.intent === "danger" ? "text-error" : ""
                     }`}
                   >
