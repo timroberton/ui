@@ -1,5 +1,5 @@
 import React from "react";
-export declare type MeasureContext = {
+export type MeasureContext = {
     measureWrappingTextNoPadding(text: string, maxWidth: number, fs: number, lh: number, fw: number): Promise<{
         w: number;
         h: number;

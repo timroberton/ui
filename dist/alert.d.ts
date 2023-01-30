@@ -1,17 +1,17 @@
 import React from "react";
-declare type OpenAlertInput = {
+type OpenAlertInput = {
     title?: string;
     text: string;
     intent?: "danger";
     closeButtonLabel?: string;
 };
-declare type OpenConfirmInput = {
+type OpenConfirmInput = {
     title?: string;
     text: string | JSX.Element;
     intent?: "danger";
     confirmButtonLabel?: string;
 };
-declare type OpenPromptInput = {
+type OpenPromptInput = {
     initialInputText: string;
     title?: string;
     text?: string;
@@ -20,14 +20,14 @@ declare type OpenPromptInput = {
     intent?: "danger";
     saveButtonLabel?: string;
 };
-export declare type AlertComponentProps<TProps, TReturn> = TProps & {
+export type AlertComponentProps<TProps, TReturn> = TProps & {
     close: (p: TReturn | undefined) => void;
 };
-declare type OpenComponentInput<TProps, TReturn> = {
+type OpenComponentInput<TProps, TReturn> = {
     elementProps: TProps;
     element: (p: AlertComponentProps<TProps, TReturn>) => React.ReactElement;
 };
-export declare type AlertContext = {
+export type AlertContext = {
     openAlert(v: OpenAlertInput): Promise<void>;
     openConfirm(v: OpenConfirmInput): Promise<boolean>;
     openPrompt(v: OpenPromptInput): Promise<string | undefined>;

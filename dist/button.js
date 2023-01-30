@@ -36,6 +36,6 @@ export function Button(_a) {
             size: size,
             margin: margin,
             className: className,
-        }) }, props, { children: props.children }), void 0));
+        }) }, props, { children: props.children })));
 }
 //# sourceMappingURL=button.js.map

@@ -4,12 +4,12 @@ export declare const getClassesForCheckbox: (props?: {
     checked?: boolean;
     intent?: "primary" | "secondary" | "success" | "warning" | "error";
 } & import("class-variance-authority/dist/types").ClassProp) => string;
-declare type CheckboxProps = Omit<VariantProps<typeof getClassesForCheckbox>, "checked"> & {
+type CheckboxProps = Omit<VariantProps<typeof getClassesForCheckbox>, "checked"> & {
     checked: boolean;
     onChange: (v: boolean) => void;
 };
 export declare function Checkbox({ intent, checked, onChange }: CheckboxProps): JSX.Element;
-declare type CheckboxWithLabelProps = CheckboxProps & {
+type CheckboxWithLabelProps = CheckboxProps & {
     label: string;
     labelOnLeft?: boolean;
 };

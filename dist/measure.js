@@ -72,11 +72,11 @@ export default function MeasureProvider(_a) {
     return (_jsxs(Context.Provider, __assign({ value: { measureWrappingTextNoPadding: measureWrappingTextNoPadding } }, { children: [_jsxs("div", __assign({ id: "newDivTester", style: { position: "fixed", opacity: 0, pointerEvents: "none" } }, { children: [_jsx("div", __assign({ id: "newDivTester1" }, { children: _jsx("div", { id: "newDivTester1Inner", style: {
                                 width: "fit-content; width: -moz-fit-content; width: -webkit-fit-content",
                                 height: "fit-content; height: -moz-fit-content; height: -webkit-fit-content",
-                            } }, void 0) }), void 0), _jsx("div", __assign({ id: "newDivTester2" }, { children: _jsx("div", { id: "newDivTester2Inner", style: {
+                            } }) })), _jsx("div", __assign({ id: "newDivTester2" }, { children: _jsx("div", { id: "newDivTester2Inner", style: {
                                 display: "inline",
                                 width: "fit-content; width: -moz-fit-content; width: -webkit-fit-content",
                                 height: "fit-content; height: -moz-fit-content; height: -webkit-fit-content",
-                            } }, void 0) }), void 0)] }), void 0), children] }), void 0));
+                            } }) }))] })), children] })));
 }
 export var useMeasure = function () { return useContext(Context); };
 //# sourceMappingURL=measure.js.map

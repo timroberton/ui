@@ -29,10 +29,10 @@ export function Input(_a) {
             intent: intent,
             margin: margin,
             className: className,
-        }), type: type !== null && type !== void 0 ? type : "text" }, props), void 0));
+        }), type: type !== null && type !== void 0 ? type : "text" }, props)));
 }
 export function InputWithLabel(_a) {
     var label = _a.label, rootId = _a.rootId, props = __rest(_a, ["label", "rootId"]);
-    return (_jsxs("div", { children: [_jsx("label", __assign({ htmlFor: rootId, className: "text-base-content-lighter block text-sm mb-1" }, { children: label }), void 0), _jsx("div", __assign({ className: "" }, { children: _jsx(Input, __assign({ name: rootId }, props), void 0) }), void 0)] }, void 0));
+    return (_jsxs("div", { children: [_jsx("label", __assign({ htmlFor: rootId, className: "text-base-content-lighter block text-sm mb-1" }, { children: label })), _jsx("div", __assign({ className: "" }, { children: _jsx(Input, __assign({ name: rootId }, props)) }))] }));
 }
 //# sourceMappingURL=input.js.map
