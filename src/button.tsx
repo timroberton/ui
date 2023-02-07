@@ -21,7 +21,7 @@ export const getClassesForButton = cva(
         danger:
           "bg-error text-error-content focus:ring-error  hover:bg-error-focus",
       },
-  size: {
+      size: {
         small: "text-sm py-1 px-2",
         medium: "text-base py-2 px-4",
       },
