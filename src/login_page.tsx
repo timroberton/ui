@@ -13,14 +13,14 @@ export type LoginPageProps =
 
 type LoginPagePropsSignInRegisterResetPasswordRequest = {
   type: "login";
-  supabaseBrowserClient: SupabaseClient;
+  supabaseBrowserClient: SupabaseClient<any>;
   logoLinkElement?: React.ReactElement;
   resetPasswordRedirectUrl: string;
 };
 
 type LoginPagePropsResetPasswordForm = {
   type: "resetpasswordform";
-  supabaseBrowserClient: SupabaseClient;
+  supabaseBrowserClient: SupabaseClient<any>;
   logoLinkElement?: React.ReactElement;
   afterResetPassword: () => void;
 };
@@ -31,7 +31,7 @@ export function LoginPage(p: LoginPageProps) {
 
   return (
     <main className="flex h-screen w-full items-start justify-center">
-      <div className="bg-base-200 text-base-content text-400 min-h-full w-full space-y-4 rounded py-10 px-12 sm:mt-24 sm:min-h-0 sm:w-96">
+      <div className="text-400 min-h-full w-full space-y-4 rounded bg-base-200 py-10 px-12 text-base-content sm:mt-24 sm:min-h-0 sm:w-96">
         {p.logoLinkElement && (
           <div className="w-full text-center">{p.logoLinkElement}</div>
         )}
@@ -129,7 +129,7 @@ function SignInForm(p: LoginPageFormPropsSignInRegister) {
           >
             Sign in
           </Button>
-          {errorMsg && <div className="text-error text-center">{errorMsg}</div>}
+          {errorMsg && <div className="text-center text-error">{errorMsg}</div>}
           <div className="space-y-2">
             <SpanButton onClick={() => p.changeLoginViewState("register")}>
               Don't have an account?
@@ -215,7 +215,7 @@ function RegisterForm(p: LoginPageFormPropsSignInRegister) {
           >
             Create account
           </Button>
-          {errorMsg && <div className="text-error text-center">{errorMsg}</div>}
+          {errorMsg && <div className="text-center text-error">{errorMsg}</div>}
           <SpanButton onClick={() => p.changeLoginViewState("signin")}>
             Already have an account?
           </SpanButton>
@@ -267,7 +267,7 @@ function ResetPasswordRequest(p: LoginPageFormPropsResetPasswordRequest) {
         <div className="text-center">Sending email...</div>
       ) : (
         <>
-          <div className="text-base-content-lighter text-sm">
+          <div className="text-sm text-base-content-lighter">
             Send a link to your email account, which you can use to reset your
             password.
           </div>
@@ -288,7 +288,7 @@ function ResetPasswordRequest(p: LoginPageFormPropsResetPasswordRequest) {
           >
             Send email
           </Button>
-          {errorMsg && <div className="text-error text-center">{errorMsg}</div>}
+          {errorMsg && <div className="text-center text-error">{errorMsg}</div>}
           <SpanButton onClick={() => p.changeLoginViewState("signin")}>
             Remember your password?
           </SpanButton>
@@ -346,7 +346,7 @@ function ResetPasswordForm(p: LoginPageFormPropsRequestPasswordForm) {
   return (
     <form id="resetPasswordForm" className="space-y-4">
       {linkErrorMsg ? (
-        <div className="text-error text-center">{linkErrorMsg}</div>
+        <div className="text-center text-error">{linkErrorMsg}</div>
       ) : (
         <>
           <FormHeader>Enter a new password here</FormHeader>
@@ -372,7 +372,7 @@ function ResetPasswordForm(p: LoginPageFormPropsRequestPasswordForm) {
                 Save
               </Button>
               {userErrorMsg && (
-                <div className="text-error text-center">{userErrorMsg}</div>
+                <div className="text-center text-error">{userErrorMsg}</div>
               )}
             </>
           )}
@@ -406,7 +406,7 @@ function SpanButton(p: { onClick: () => void; children: React.ReactNode }) {
   return (
     <div className="text-center">
       <span
-        className="text-base-content-lighter cursor-pointer text-sm hover:underline"
+        className="cursor-pointer text-sm text-base-content-lighter hover:underline"
         onClick={p.onClick}
       >
         {p.children}
@@ -417,7 +417,7 @@ function SpanButton(p: { onClick: () => void; children: React.ReactNode }) {
 
 function FormHeader(p: { children: React.ReactNode }) {
   return (
-    <div className="font-700 text-primary text-center text-lg">
+    <div className="text-center text-lg font-700 text-primary">
       {p.children}
     </div>
   );

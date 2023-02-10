@@ -173,7 +173,7 @@ export default function AlertProvider({
           <Dialog.Panel className="mx-auto max-w-lg rounded bg-base-100 px-10 py-8">
             {alertState?.stateType === "component" ? (
               <alertState.element
-                close={(p) => {
+                close={(p: any) => {
                   setAlertState(undefined);
                   alertState.componentResolver(p);
                 }}
